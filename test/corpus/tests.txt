@@ -55,6 +55,18 @@ provider 'sys@1.0.0'
       (string_content))))
 
 ==============================================
+Simple extension import
+==============================================
+
+extension microsoftGraph
+
+---
+
+(infrastructure
+  (extension_statement
+    (identifier)))
+
+==============================================
 Simple variable assignment
 ==============================================
 

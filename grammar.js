@@ -88,6 +88,8 @@ module.exports = grammar({
     statement: $ => choice(
       $.decorators,
       $.declaration,
+      $.extension_statement,
+      $.extension_with_statement,
       $.import_statement,
       $.import_with_statement,
       $.import_functionality,
@@ -114,6 +116,20 @@ module.exports = grammar({
       $.string,
       '=',
       choice($.if_statement, $.object, $.for_statement),
+    ),
+
+    extension_statement: $ => seq(
+      'extension',
+      $.identifier,
+      optional(seq('as', $.identifier)),
+    ),
+
+    extension_with_statement: $ => seq(
+      'extension',
+      $.identifier,
+      'with',
+      $.expression,
+      optional(seq('as', $.identifier)),
     ),
 
     import_statement: $ => seq(

@@ -146,6 +146,14 @@
         "named": true
       },
       {
+        "type": "extension_statement",
+        "named": true
+      },
+      {
+        "type": "extension_with_statement",
+        "named": true
+      },
+      {
         "type": "import_functionality",
         "named": true
       },

@@ -7,7 +7,7 @@
 #define LANGUAGE_VERSION 14
 #define STATE_COUNT 833
 #define LARGE_STATE_COUNT 9
-#define SYMBOL_COUNT 151
+#define SYMBOL_COUNT 157
 #define ALIAS_COUNT 4
 #define TOKEN_COUNT 79
 #define EXTERNAL_TOKEN_COUNT 2
@@ -170,6 +170,8 @@ enum ts_symbol_identifiers {
   alias_sym_loop_variable = 152,
   alias_sym_nullable_return_type = 153,
   alias_sym_property_identifier = 154,
+  sym_extension_statement = 155,
+  sym_extension_with_statement = 156,
 };
 
 static const char * const ts_symbol_names[] = {
@@ -256,6 +258,8 @@ static const char * const ts_symbol_names[] = {
   [sym_statement] = "statement",
   [sym_declaration] = "declaration",
   [sym_module_declaration] = "module_declaration",
+  [sym_extension_statement] = "extension_statement",
+  [sym_extension_with_statement] = "extension_with_statement",
   [sym_import_statement] = "import_statement",
   [sym_import_with_statement] = "import_with_statement",
   [sym_import_functionality] = "import_functionality",
@@ -414,6 +418,8 @@ static const TSSymbol ts_symbol_map[] = {
   [sym_statement] = sym_statement,
   [sym_declaration] = sym_declaration,
   [sym_module_declaration] = sym_module_declaration,
+  [sym_extension_statement] = sym_extension_statement,
+  [sym_extension_with_statement] = sym_extension_with_statement,
   [sym_import_statement] = sym_import_statement,
   [sym_import_with_statement] = sym_import_with_statement,
   [sym_import_functionality] = sym_import_functionality,
@@ -820,6 +826,14 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .supertype = true,
   },
   [sym_module_declaration] = {
+    .visible = true,
+    .named = true,
+  },
+  [sym_extension_statement] = {
+    .visible = true,
+    .named = true,
+  },
+  [sym_extension_with_statement] = {
     .visible = true,
     .named = true,
   },
@@ -4920,6 +4934,8 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_statement] = STATE(417),
     [sym_declaration] = STATE(611),
     [sym_module_declaration] = STATE(615),
+    [sym_extension_statement] = STATE(611),
+    [sym_extension_with_statement] = STATE(611),
     [sym_import_statement] = STATE(611),
     [sym_import_with_statement] = STATE(611),
     [sym_import_functionality] = STATE(611),
@@ -34048,8 +34064,10 @@ static const uint16_t ts_small_parse_table[] = {
     STATE(607), 2,
       sym_decorator,
       aux_sym_decorators_repeat1,
-    STATE(611), 7,
+    STATE(611), 9,
       sym_declaration,
+      sym_extension_statement,
+      sym_extension_with_statement,
       sym_import_statement,
       sym_import_with_statement,
       sym_import_functionality,
@@ -34109,8 +34127,10 @@ static const uint16_t ts_small_parse_table[] = {
     STATE(607), 2,
       sym_decorator,
       aux_sym_decorators_repeat1,
-    STATE(611), 7,
+    STATE(611), 9,
       sym_declaration,
+      sym_extension_statement,
+      sym_extension_with_statement,
       sym_import_statement,
       sym_import_with_statement,
       sym_import_functionality,
@@ -45861,6 +45881,8 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [1574] = {.entry = {.count = 1, .reusable = true}}, SHIFT(251),
   [1576] = {.entry = {.count = 1, .reusable = true}}, SHIFT(252),
   [1578] = {.entry = {.count = 1, .reusable = true}}, SHIFT(646),
+  [1580] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_extension_statement, 2, 0, 0),
+  [1582] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_extension_with_statement, 2, 0, 0),
 };
 
 enum ts_external_scanner_symbol_identifiers {

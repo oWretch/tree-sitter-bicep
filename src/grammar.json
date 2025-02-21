@@ -23,6 +23,14 @@
         },
         {
           "type": "SYMBOL",
+          "name": "extension_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "extension_with_statement"
+        },
+        {
+          "type": "SYMBOL",
           "name": "import_statement"
         },
         {

@@ -134,6 +134,7 @@
   "output"
   "param"
   "resource"
+  "extension"
   "existing"
   "targetScope"
   "type"
