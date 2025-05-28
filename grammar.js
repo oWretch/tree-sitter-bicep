@@ -120,16 +120,16 @@ module.exports = grammar({
 
     extension_statement: $ => seq(
       'extension',
-      $.identifier,
-      optional(seq('as', $.identifier)),
+      field('name', $.identifier),
+      optional(seq('as', field('alias', $.identifier))),
     ),
 
     extension_with_statement: $ => seq(
       'extension',
-      $.identifier,
+      field('name', $.identifier),
       'with',
-      $.expression,
-      optional(seq('as', $.identifier)),
+      field('properties', $.object),
+      optional(seq('as', field('alias', $.identifier))),
     ),
 
     import_statement: $ => seq(
@@ -473,6 +473,7 @@ module.exports = grammar({
         'module',
         'import',
         'provider',
+        'extension',
         'metadata',
         'output',
         'param',
