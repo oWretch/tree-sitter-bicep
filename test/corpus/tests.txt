@@ -42,10 +42,10 @@ import * as bar from './bar.bicep'
       (string_content))))
 
 ==============================================
-Simple provider import
+Simple import
 ==============================================
 
-provider 'sys@1.0.0'
+import 'sys@1.0.0'
 
 ---
 

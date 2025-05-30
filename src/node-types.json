@@ -1674,11 +1674,13 @@
   },
   {
     "type": "comment",
-    "named": true
+    "named": true,
+    "extra": true
   },
   {
     "type": "diagnostic_comment",
-    "named": true
+    "named": true,
+    "extra": true
   },
   {
     "type": "escape_sequence",
@@ -1771,10 +1773,6 @@
   {
     "type": "property_identifier",
     "named": true
-  },
-  {
-    "type": "provider",
-    "named": false
   },
   {
     "type": "resource",

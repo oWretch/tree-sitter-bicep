@@ -234,17 +234,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "import"
-            },
-            {
-              "type": "STRING",
-              "value": "provider"
-            }
-          ]
+          "type": "STRING",
+          "value": "import"
         },
         {
           "type": "SYMBOL",
@@ -277,17 +268,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "import"
-            },
-            {
-              "type": "STRING",
-              "value": "provider"
-            }
-          ]
+          "type": "STRING",
+          "value": "import"
         },
         {
           "type": "SYMBOL",
@@ -2621,10 +2603,6 @@
             },
             {
               "type": "STRING",
-              "value": "provider"
-            },
-            {
-              "type": "STRING",
               "value": "extension"
             },
             {
@@ -3199,5 +3177,6 @@
     "declaration",
     "expression",
     "primary_expression"
-  ]
+  ],
+  "reserved": {}
 }

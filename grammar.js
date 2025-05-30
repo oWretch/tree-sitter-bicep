@@ -133,13 +133,13 @@ module.exports = grammar({
     ),
 
     import_statement: $ => seq(
-      choice('import', 'provider'),
+      'import',
       $.string,
       optional(seq('as', $.identifier)),
     ),
 
     import_with_statement: $ => seq(
-      choice('import', 'provider'),
+      'import',
       $.string,
       'with',
       $.expression,
@@ -472,7 +472,6 @@ module.exports = grammar({
       choice(
         'module',
         'import',
-        'provider',
         'extension',
         'metadata',
         'output',
