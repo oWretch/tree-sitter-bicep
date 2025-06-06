@@ -18,6 +18,8 @@ def __getattr__(name):
         return _get_query("INJECTIONS_QUERY", "injections.scm")
     if name == "LOCALS_QUERY":
         return _get_query("LOCALS_QUERY", "locals.scm")
+    if name == "OUTLINE_QUERY":
+        return _get_query("OUTLINE_QUERY", "outline.scm")
 
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
@@ -27,6 +29,7 @@ __all__ = [
     "HIGHLIGHTS_QUERY",
     "INJECTIONS_QUERY",
     "LOCALS_QUERY",
+    "OUTLINE_QUERY",
 ]
 
 

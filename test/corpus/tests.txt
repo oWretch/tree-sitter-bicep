@@ -721,3 +721,223 @@ output displayName string = myParent::myChild.properties.displayName
           (identifier))
         (property_identifier))
       (property_identifier))))
+
+==============================================
+Comprehensive outline test
+==============================================
+
+param storageAccountName string = 'myStorageAccount'
+param location string = resourceGroup().location
+
+var uniqueStorageName = '${storageAccountName}${uniqueString(resourceGroup().id)}'
+var tags = {
+  Environment: 'Development'
+  Project: 'BicepExample'
+}
+
+type StorageAccountConfig = {
+  name: string
+  location: string
+  sku: string
+}
+
+func generateStorageName(prefix string, suffix string) string => '${prefix}-${suffix}'
+
+metadata description = 'This template creates a storage account with blob container'
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' = {
+  name: uniqueStorageName
+  location: location
+  kind: 'StorageV2'
+  sku: {
+    name: 'Standard_LRS'
+  }
+  tags: tags
+}
+
+module networkModule './network.bicep' = {
+  name: 'networkDeployment'
+  params: {
+    location: location
+  }
+}
+
+output storageAccountId string = storageAccount.id
+output storageAccountName string = storageAccount.name
+
+test testStorageAccount './tests/storage.test.bicep' = {
+  params: {
+    storageAccountName: 'teststorage'
+    location: 'eastus'
+  }
+}
+
+assert storageNameValid = length(storageAccount.name) <= 24
+
+---
+
+(infrastructure
+  (parameter_declaration
+    (identifier)
+    (type
+      (primitive_type))
+    (string
+      (string_content)))
+  (parameter_declaration
+    (identifier)
+    (type
+      (primitive_type))
+    (call_expression
+      (member_expression
+        (call_expression
+          (identifier)
+          (arguments))
+        (property_identifier))
+      (arguments)))
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content)
+      (interpolation
+        (identifier))
+      (interpolation
+        (call_expression
+          (identifier)
+          (arguments
+            (call_expression
+              (member_expression
+                (call_expression
+                  (identifier)
+                  (arguments))
+                (property_identifier))
+              (arguments)))))))
+  (variable_declaration
+    (identifier)
+    (object
+      (object_property
+        (identifier)
+        (string
+          (string_content)))
+      (object_property
+        (identifier)
+        (string
+          (string_content)))))
+  (type_declaration
+    (identifier)
+    (object
+      (object_property
+        (identifier)
+        (type
+          (primitive_type)))
+      (object_property
+        (identifier)
+        (type
+          (primitive_type)))
+      (object_property
+        (identifier)
+        (type
+          (primitive_type)))))
+  (user_defined_function
+    name: (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (type
+          (primitive_type)))
+      (parameter
+        (identifier)
+        (type
+          (primitive_type))))
+    returns: (type
+      (primitive_type))
+    (string
+      (string_content)
+      (interpolation
+        (identifier))
+      (string_content)
+      (interpolation
+        (identifier))))
+  (metadata_declaration
+    (identifier)
+    (string
+      (string_content)))
+  (resource_declaration
+    (identifier)
+    (string
+      (string_content))
+    (object
+      (object_property
+        (identifier)
+        (identifier))
+      (object_property
+        (identifier)
+        (identifier))
+      (object_property
+        (identifier)
+        (string
+          (string_content)))
+      (object_property
+        (identifier)
+        (object
+          (object_property
+            (identifier)
+            (string
+              (string_content)))))
+      (object_property
+        (identifier)
+        (identifier))))
+  (module_declaration
+    (identifier)
+    (string
+      (string_content))
+    (object
+      (object_property
+        (identifier)
+        (string
+          (string_content)))
+      (object_property
+        (identifier)
+        (object
+          (object_property
+            (identifier)
+            (identifier))))))
+  (output_declaration
+    (identifier)
+    (type
+      (primitive_type))
+    (member_expression
+      (identifier)
+      (property_identifier)))
+  (output_declaration
+    (identifier)
+    (type
+      (primitive_type))
+    (member_expression
+      (identifier)
+      (property_identifier)))
+  (test_block
+    (identifier)
+    (string
+      (string_content))
+    (object
+      (object_property
+        (identifier)
+        (object
+          (object_property
+            (identifier)
+            (string
+              (string_content)))
+          (object_property
+            (identifier)
+            (string
+              (string_content)))))))
+  (assert_statement
+    name: (identifier)
+    (binary_expression
+      (call_expression
+        (identifier)
+        (arguments
+          (member_expression
+            (identifier)
+            (property_identifier))))
+      (number))))
