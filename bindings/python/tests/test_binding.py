@@ -17,4 +17,5 @@ class TestLanguage(TestCase):
         self.assertIn("parameter_declaration", outline_query)
         self.assertIn("resource_declaration", outline_query)
         self.assertIn("@name", outline_query)
-        self.assertIn('"kind"', outline_query)
+        self.assertIn("@context", outline_query)
+        self.assertIn("@item", outline_query)

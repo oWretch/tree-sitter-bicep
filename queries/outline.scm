@@ -1,57 +1,54 @@
-; Outline queries for Bicep files
-; These queries extract the main constructs for outline/symbol views
+; Bicep outline support for Zed editor
+; Comments
+(comment) @annotation
+(diagnostic_comment) @annotation
 
-; Parameters
+; Parameter declarations
 (parameter_declaration
-  (identifier) @name
-  (#set! "kind" "parameter")) @definition.parameter
+    "param" @context
+    (identifier) @name) @item
 
-; Variables  
+; Variable declarations  
 (variable_declaration
-  (identifier) @name
-  (#set! "kind" "variable")) @definition.variable
+    "var" @context
+    (identifier) @name) @item
 
-; Resources
+; Resource declarations
 (resource_declaration
-  (identifier) @name
-  (string) @detail
-  (#set! "kind" "resource")) @definition.resource
+    "resource" @context
+    (identifier) @name) @item
 
-; Modules
+; Module declarations
 (module_declaration
-  (identifier) @name
-  (string) @detail
-  (#set! "kind" "module")) @definition.module
+    "module" @context
+    (identifier) @name) @item
 
-; Outputs
+; Output declarations
 (output_declaration
-  (identifier) @name
-  (type) @detail
-  (#set! "kind" "output")) @definition.output
+    "output" @context
+    (identifier) @name) @item
 
 ; Type declarations
 (type_declaration
-  (identifier) @name
-  (#set! "kind" "type")) @definition.type
+    "type" @context
+    (identifier) @name) @item
 
 ; User-defined functions
 (user_defined_function
-  name: (identifier) @name
-  returns: (type) @detail
-  (#set! "kind" "function")) @definition.function
+    "func" @context
+    name: (identifier) @name) @item
 
-; Metadata
+; Metadata declarations
 (metadata_declaration
-  (identifier) @name
-  (#set! "kind" "metadata")) @definition.metadata
+    "metadata" @context
+    (identifier) @name) @item
 
 ; Test blocks
 (test_block
-  (identifier) @name
-  (string) @detail
-  (#set! "kind" "test")) @definition.test
+    "test" @context
+    (identifier) @name) @item
 
 ; Assert statements
 (assert_statement
-  name: (identifier) @name
-  (#set! "kind" "assert")) @definition.assert
+    "assert" @context
+    name: (identifier) @name) @item
