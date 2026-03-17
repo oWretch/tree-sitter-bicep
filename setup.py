@@ -8,9 +8,9 @@ from wheel.bdist_wheel import bdist_wheel
 
 class Build(build):
     def run(self):
-        if isdir("queries"):
+        if isdir("bicep/queries"):
             dest = join(self.build_lib, "tree_sitter_bicep", "queries")
-            self.copy_tree("queries", dest)
+            self.copy_tree("bicep/queries", dest)
         super().run()
 
 

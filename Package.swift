@@ -19,7 +19,7 @@ let package = Package(
                 "bicep/src/scanner.c",
             ],
             resources: [
-                .copy("queries")
+                .copy("bicep/queries")
             ],
             publicHeadersPath: "bindings/swift/TreeSitterBicep",
             cSettings: [.headerSearchPath("bicep/src")]
@@ -33,7 +33,7 @@ let package = Package(
                 "bicep_params/src/scanner.c",
             ],
             resources: [
-                .copy("queries")
+                .copy("bicep_params/queries")
             ],
             publicHeadersPath: "bindings/swift/TreeSitterBicepParams",
             cSettings: [.headerSearchPath("bicep_params/src")]

@@ -106,6 +106,7 @@ clean:
 	$(RM) $(ALL_OBJS) $(ALL_LIBS)
 
 test:
-	$(TS) test
+	cd bicep && $(TS) test
+	cd bicep_params && $(TS) test
 
 .PHONY: all install uninstall clean test

@@ -44,13 +44,13 @@ pub const BICEP_NODE_TYPES: &str = include_str!("../../bicep/src/node-types.json
 pub const BICEP_PARAMS_NODE_TYPES: &str = include_str!("../../bicep_params/src/node-types.json");
 
 /// The syntax highlighting query for Bicep.
-pub const HIGHLIGHTS_QUERY: &str = include_str!("../../queries/bicep/highlights.scm");
+pub const HIGHLIGHTS_QUERY: &str = include_str!("../../bicep/queries/highlights.scm");
 
 /// The injection query for Bicep.
-pub const INJECTIONS_QUERY: &str = include_str!("../../queries/bicep/injections.scm");
+pub const INJECTIONS_QUERY: &str = include_str!("../../bicep/queries/injections.scm");
 
 /// The local-variable syntax highlighting query for Bicep.
-pub const LOCALS_QUERY: &str = include_str!("../../queries/bicep/locals.scm");
+pub const LOCALS_QUERY: &str = include_str!("../../bicep/queries/locals.scm");
 
 #[cfg(test)]
 mod tests {

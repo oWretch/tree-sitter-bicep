@@ -21,9 +21,10 @@ include = [
   "bindings/rust",
   "bicep/grammar.js",
   "bicep/src",
+  "bicep/queries",
   "bicep_params/grammar.js",
   "bicep_params/src",
-  "queries/*",
+  "bicep_params/queries",
   "./tree-sitter.json",
 ]
 
