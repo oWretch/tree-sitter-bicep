@@ -1303,3 +1303,169 @@ type grouped = (string | int)[]
             (union_type
               (primitive_type)
               (primitive_type))))))))
+
+==============================================
+Extension declaration
+==============================================
+
+extension 'kubernetes@1.0.0'
+
+---
+
+(infrastructure
+  (extension_declaration
+    (string
+      (string_content))))
+
+==============================================
+Extension declaration with alias
+==============================================
+
+extension 'kubernetes@1.0.0' as k8s
+
+---
+
+(infrastructure
+  (extension_declaration
+    (string
+      (string_content))
+    (identifier)))
+
+==============================================
+Extension declaration with config
+==============================================
+
+extension 'kubernetes@1.0.0' with {
+  kubeConfig: 'config'
+  namespace: 'default'
+} as k8s
+
+---
+
+(infrastructure
+  (extension_declaration
+    (string
+      (string_content))
+    (object
+      (object_property
+        (identifier)
+        (string
+          (string_content)))
+      (object_property
+        (identifier)
+        (string
+          (string_content))))
+    (identifier)))
+
+==============================================
+Spread in object
+==============================================
+
+var merged = { ...objA }
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (object
+      (object_property
+        (spread_expression
+          (identifier))))))
+
+==============================================
+Spread in array
+==============================================
+
+var combined = [1, ...arrA, 4]
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (array
+      (number)
+      (spread_expression
+        (identifier))
+      (number))))
+
+==============================================
+resourceInput type
+==============================================
+
+output res resourceInput<'Microsoft.Storage/storageAccounts@2021-02-01'> = stg
+
+---
+
+(infrastructure
+  (output_declaration
+    (identifier)
+    (type
+      (parameterized_type
+        (type_arguments
+          (string
+            (string_content)))))
+    (identifier)))
+
+==============================================
+resourceOutput type
+==============================================
+
+output res resourceOutput<'Microsoft.Storage/storageAccounts@2021-02-01'> = stg
+
+---
+
+(infrastructure
+  (output_declaration
+    (identifier)
+    (type
+      (parameterized_type
+        (type_arguments
+          (string
+            (string_content)))))
+    (identifier)))
+
+==============================================
+Unary plus operator
+==============================================
+
+var x = +5
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (unary_expression
+      argument: (number))))
+
+==============================================
+From-end subscript expression
+==============================================
+
+var x = myArray[^1]
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (subscript_expression
+      object: (identifier)
+      index: (number))))
+
+==============================================
+Safe from-end subscript expression
+==============================================
+
+var x = myArray[?^1]
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (subscript_expression
+      object: (identifier)
+      index: (number))))

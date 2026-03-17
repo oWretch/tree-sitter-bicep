@@ -2,6 +2,7 @@
 [
   "import"
   "provider"
+  "extension"
   "with"
   "as"
   "from"
@@ -134,6 +135,8 @@
   "output"
   "param"
   "resource"
+  "resourceInput"
+  "resourceOutput"
   "existing"
   "targetScope"
   "type"
@@ -168,10 +171,14 @@
   "="
   "!"
   ".?"
+  "..."
 ] @operator
 
 (subscript_expression
   "?" @operator)
+
+(subscript_expression
+  "^" @operator)
 
 (nullable_type
   "?" @operator)

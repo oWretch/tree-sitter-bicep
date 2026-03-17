@@ -88,6 +88,7 @@ module.exports = grammar({
     statement: $ => choice(
       $.decorators,
       $.declaration,
+      $.extension_declaration,
       $.import_statement,
       $.import_with_statement,
       $.import_functionality,
@@ -138,6 +139,13 @@ module.exports = grammar({
       ),
       'from',
       $.string,
+    ),
+
+    extension_declaration: $ => seq(
+      'extension',
+      $.string,
+      optional(seq('with', $.object)),
+      optional(seq('as', $.identifier)),
     ),
 
     using_statement: $ => seq('using', $.string),
@@ -266,7 +274,7 @@ module.exports = grammar({
       '[',
       optionalCommaSep(seq(
         optional($.decorators),
-        $.expression,
+        choice($.spread_expression, $.expression),
       )),
       ']',
     ),
@@ -297,8 +305,11 @@ module.exports = grammar({
           $.union_type,
         ),
       ),
+      $.spread_expression,
       $.resource_declaration,
     ),
+
+    spread_expression: $ => seq('...', $.expression),
 
     if_statement: $ => seq('if', $.parenthesized_expression, $.object),
 
@@ -347,6 +358,7 @@ module.exports = grammar({
       field('object', choice($.expression, $.primary_expression)),
       '[',
       optional('?'),
+      optional('^'),
       field('index', $.expression),
       ']',
     )),
@@ -397,7 +409,7 @@ module.exports = grammar({
     },
 
     unary_expression: $ => prec.left(PREC.UNARY, seq(
-      field('operator', choice('!', '-')),
+      field('operator', choice('!', '-', '+')),
       field('argument', $.expression),
     )),
 
@@ -457,10 +469,13 @@ module.exports = grammar({
         'module',
         'import',
         'provider',
+        'extension',
         'metadata',
         'output',
         'param',
         'resource',
+        'resourceInput',
+        'resourceOutput',
         'existing',
         'type',
         'var',
@@ -523,7 +538,7 @@ module.exports = grammar({
 
     parameterized_type: $ => prec(2, seq(
       optional(seq($.identifier, '.')),
-      'resource',
+      choice('resource', 'resourceInput', 'resourceOutput'),
       $.type_arguments,
     )),
 
