@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "TreeSitterBicep",
     products: [
-        .library(name: "TreeSitterBicep", targets: ["TreeSitterBicep"]),
+        .library(name: "TreeSitterBicep", targets: ["TreeSitterBicep", "TreeSitterBicepParams"]),
     ],
     dependencies: [
         .package(url: "https://github.com/ChimeHQ/SwiftTreeSitter", from: "0.8.0"),
@@ -15,20 +15,35 @@ let package = Package(
             dependencies: [],
             path: ".",
             sources: [
-                "src/parser.c",
-                "src/scanner.c",
+                "bicep/src/parser.c",
+                "bicep/src/scanner.c",
             ],
             resources: [
                 .copy("queries")
             ],
-            publicHeadersPath: "bindings/swift",
-            cSettings: [.headerSearchPath("src")]
+            publicHeadersPath: "bindings/swift/TreeSitterBicep",
+            cSettings: [.headerSearchPath("bicep/src")]
+        ),
+        .target(
+            name: "TreeSitterBicepParams",
+            dependencies: [],
+            path: ".",
+            sources: [
+                "bicep_params/src/parser.c",
+                "bicep_params/src/scanner.c",
+            ],
+            resources: [
+                .copy("queries")
+            ],
+            publicHeadersPath: "bindings/swift/TreeSitterBicepParams",
+            cSettings: [.headerSearchPath("bicep_params/src")]
         ),
         .testTarget(
             name: "TreeSitterBicepTests",
             dependencies: [
                 "SwiftTreeSitter",
                 "TreeSitterBicep",
+                "TreeSitterBicepParams",
             ],
             path: "bindings/swift/TreeSitterBicepTests"
         )

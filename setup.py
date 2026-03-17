@@ -35,8 +35,10 @@ setup(
             name="_binding",
             sources=[
                 "bindings/python/tree_sitter_bicep/binding.c",
-                "src/parser.c",
-                "src/scanner.c",
+                "bicep/src/parser.c",
+                "bicep/src/scanner.c",
+                "bicep_params/src/parser.c",
+                "bicep_params/src/scanner.c",
             ],
             extra_compile_args=[
                 "-std=c11",
@@ -50,7 +52,7 @@ setup(
                 ("PY_SSIZE_T_CLEAN", None),
                 ("TREE_SITTER_HIDE_SYMBOLS", None),
             ],
-            include_dirs=["src"],
+            include_dirs=["bicep/src"],
             py_limited_api=True,
         )
     ],

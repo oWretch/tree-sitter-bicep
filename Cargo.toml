@@ -1,23 +1,30 @@
 [package]
 name = "tree-sitter-bicep"
-description = "Bicep grammar for tree-sitter"
+description = "Bicep and Bicep parameter grammars for tree-sitter"
 version = "1.1.0"
-authors = ["Amaan Qureshi <amaanq12@gmail.com>"]
+authors = [
+  "Amaan Qureshi <amaanq12@gmail.com>",
+  "Jerome Brown <Jerome@SoliDeoGloria.tech>",
+]
 license = "MIT"
 readme = "README.md"
 keywords = ["incremental", "parsing", "tree-sitter", "bicep"]
 categories = ["parsing", "text-editors"]
-repository = "https://github.com/tree-sitter-grammars/tree-sitter-bicep"
+repository = "https://github.com/oWretch/tree-sitter-bicep"
 edition = "2021"
 autoexamples = false
 
 build = "bindings/rust/build.rs"
 include = [
-  "bindings/rust/*",
-  "grammar.js",
+  "LICENSE",
+  "common",
+  "bindings/rust",
+  "bicep/grammar.js",
+  "bicep/src",
+  "bicep_params/grammar.js",
+  "bicep_params/src",
   "queries/*",
-  "src/*",
-  "tree-sitter.json",
+  "./tree-sitter.json",
 ]
 
 [lib]

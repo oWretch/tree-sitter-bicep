@@ -1,9 +1,12 @@
 * text=auto eol=lf
 
 # Generated source files
-src/*.json linguist-generated
-src/parser.c linguist-generated
-src/tree_sitter/* linguist-generated
+bicep/src/*.json linguist-generated
+bicep/src/parser.c linguist-generated
+bicep/src/tree_sitter/* linguist-generated
+bicep_params/src/*.json linguist-generated
+bicep_params/src/parser.c linguist-generated
+bicep_params/src/tree_sitter/* linguist-generated
 
 # C bindings
 bindings/c/* linguist-generated

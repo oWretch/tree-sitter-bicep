@@ -7,9 +7,8 @@
  */
 
 // deno-lint-ignore-file ban-ts-comment
-/* eslint-disable arrow-parens */
-/* eslint-disable camelcase */
-/* eslint-disable-next-line spaced-comment */
+
+
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
@@ -47,7 +46,7 @@ const primitive_types = [
  *
  * @param {string} dialect - either 'bicep' or 'bicep_params'
  *
- * @return {object} grammar definition
+ * @returns {object} grammar definition
  */
 module.exports = function defineGrammar(dialect) {
   const isBicep = dialect === 'bicep';
@@ -245,19 +244,19 @@ module.exports = function defineGrammar(dialect) {
         $.string,
       ),
 
-      using_statement: $ => isBicep
-        ? seq('using', $.string)
-        : seq('using', choice($.string, 'none')),
+      using_statement: $ => isBicep ?
+        seq('using', $.string) :
+        seq('using', choice($.string, 'none')),
 
       // Parameter declaration differs between dialects
-      parameter_declaration: $ => isBicep
-        ? seq(
+      parameter_declaration: $ => isBicep ?
+        seq(
           'param',
           $.identifier,
           $.type,
           optional(seq('=', $.expression)),
-        )
-        : seq(
+        ) :
+        seq(
           'param',
           $.identifier,
           '=',
@@ -331,31 +330,31 @@ module.exports = function defineGrammar(dialect) {
       } : {}),
 
       // Arrays and objects differ: bicep has decorators, bicep_params has spread
-      array: $ => isBicep
-        ? seq(
+      array: $ => isBicep ?
+        seq(
           '[',
           optionalCommaSep(seq(
             optional($.decorators),
             $.expression,
           )),
           ']',
-        )
-        : seq(
+        ) :
+        seq(
           '[',
           optionalCommaSep(choice($.spread_expression, $.expression)),
           ']',
         ),
 
-      object: $ => isBicep
-        ? seq(
+      object: $ => isBicep ?
+        seq(
           '{',
           optionalCommaSep(seq(
             optional($.decorators),
             $.object_property,
           )),
           '}',
-        )
-        : seq(
+        ) :
+        seq(
           '{',
           optionalCommaSep(choice($.spread_expression, $.object_property)),
           '}',
@@ -366,8 +365,8 @@ module.exports = function defineGrammar(dialect) {
         spread_expression: $ => seq('...', $.expression),
       } : {}),
 
-      object_property: $ => isBicep
-        ? choice(
+      object_property: $ => isBicep ?
+        choice(
           seq(
             choice(
               $.identifier,
@@ -387,8 +386,8 @@ module.exports = function defineGrammar(dialect) {
             ),
           ),
           $.resource_declaration,
-        )
-        : seq(
+        ) :
+        seq(
           choice(
             $.identifier,
             $.keyword_identifier,
@@ -670,8 +669,7 @@ module.exports = function defineGrammar(dialect) {
  *
  * @param {Rule} rule
  *
- * @return {ChoiceRule}
- *
+ * @returns {ChoiceRule}
  */
 function commaSep(rule) {
   return optional(commaSep1(rule));
@@ -682,8 +680,7 @@ function commaSep(rule) {
  *
  * @param {Rule} rule
  *
- * @return {SeqRule}
- *
+ * @returns {SeqRule}
  */
 function commaSep1(rule) {
   return seq(rule, repeat(seq(',', rule)));
@@ -694,8 +691,7 @@ function commaSep1(rule) {
  *
  * @param {Rule} rule
  *
- * @return {SeqRule}
- *
+ * @returns {SeqRule}
  */
 function optionalCommaSep1(rule) {
   return seq(rule, repeat(seq(optional(','), rule)), optional(','));
@@ -706,8 +702,7 @@ function optionalCommaSep1(rule) {
  *
  * @param {Rule} rule
  *
- * @return {ChoiceRule}
- *
+ * @returns {ChoiceRule}
  */
 function optionalCommaSep(rule) {
   return optional(optionalCommaSep1(rule));

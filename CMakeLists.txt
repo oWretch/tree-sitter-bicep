@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.13)
 
 project(tree-sitter-bicep
         VERSION "1.1.0"
-        DESCRIPTION "Bicep grammar for tree-sitter"
-        HOMEPAGE_URL "https://github.com/tree-sitter-grammars/tree-sitter-bicep"
+        DESCRIPTION "Bicep and Bicep parameter grammars for tree-sitter"
+        HOMEPAGE_URL "https://github.com/oWretch/tree-sitter-bicep"
         LANGUAGES C)
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
@@ -17,41 +17,45 @@ endif()
 
 find_program(TREE_SITTER_CLI tree-sitter DOC "Tree-sitter CLI")
 
-add_custom_command(OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/src/parser.c"
-                   DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/grammar.json"
-                   COMMAND "${TREE_SITTER_CLI}" generate src/grammar.json
-                            --abi=${TREE_SITTER_ABI_VERSION}
-                   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-                   COMMENT "Generating parser.c")
-
-add_library(tree-sitter-bicep src/parser.c)
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/scanner.c)
-  target_sources(tree-sitter-bicep PRIVATE src/scanner.c)
-endif()
-target_include_directories(tree-sitter-bicep PRIVATE src)
-
-target_compile_definitions(tree-sitter-bicep PRIVATE
-                           $<$<BOOL:${TREE_SITTER_REUSE_ALLOCATOR}>:TREE_SITTER_REUSE_ALLOCATOR>
-                           $<$<CONFIG:Debug>:TREE_SITTER_DEBUG>)
-
-set_target_properties(tree-sitter-bicep
-                      PROPERTIES
-                      C_STANDARD 11
-                      POSITION_INDEPENDENT_CODE ON
-                      SOVERSION "${TREE_SITTER_ABI_VERSION}.${PROJECT_VERSION_MAJOR}"
-                      DEFINE_SYMBOL "")
-
-configure_file(bindings/c/tree-sitter-bicep.pc.in
-               "${CMAKE_CURRENT_BINARY_DIR}/tree-sitter-bicep.pc" @ONLY)
-
 include(GNUInstallDirs)
 
-install(FILES bindings/c/tree-sitter-bicep.h
-        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/tree_sitter")
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/tree-sitter-bicep.pc"
-        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig")
-install(TARGETS tree-sitter-bicep
-        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+macro(add_parser name src_dir)
+    add_custom_command(OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/${src_dir}/parser.c"
+                       DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/${src_dir}/grammar.json"
+                       COMMAND "${TREE_SITTER_CLI}" generate ${src_dir}/grammar.json
+                                --abi=${TREE_SITTER_ABI_VERSION}
+                       WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+                       COMMENT "Generating ${name} parser.c")
+
+    add_library(tree-sitter-${name}
+                "${CMAKE_CURRENT_SOURCE_DIR}/${src_dir}/parser.c"
+                "${CMAKE_CURRENT_SOURCE_DIR}/${src_dir}/scanner.c")
+    target_include_directories(tree-sitter-${name} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/${src_dir}")
+
+    target_compile_definitions(tree-sitter-${name} PRIVATE
+                               $<$<BOOL:${TREE_SITTER_REUSE_ALLOCATOR}>:TREE_SITTER_REUSE_ALLOCATOR>
+                               $<$<CONFIG:Debug>:TREE_SITTER_DEBUG>)
+
+    set_target_properties(tree-sitter-${name}
+                          PROPERTIES
+                          C_STANDARD 11
+                          POSITION_INDEPENDENT_CODE ON
+                          SOVERSION "${TREE_SITTER_ABI_VERSION}.${PROJECT_VERSION_MAJOR}"
+                          DEFINE_SYMBOL "")
+
+    configure_file("${CMAKE_SOURCE_DIR}/bindings/c/tree-sitter-${name}.pc.in"
+                   "${CMAKE_CURRENT_BINARY_DIR}/tree-sitter-${name}.pc" @ONLY)
+
+    install(FILES "${CMAKE_SOURCE_DIR}/bindings/c/tree-sitter-${name}.h"
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/tree_sitter")
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/tree-sitter-${name}.pc"
+            DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig")
+    install(TARGETS tree-sitter-${name}
+            LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+endmacro()
+
+add_parser(bicep bicep/src)
+add_parser(bicep-params bicep_params/src)
 
 add_custom_target(ts-test "${TREE_SITTER_CLI}" test
                   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
