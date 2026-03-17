@@ -1674,13 +1674,11 @@
   },
   {
     "type": "comment",
-    "named": true,
-    "extra": true
+    "named": true
   },
   {
     "type": "diagnostic_comment",
-    "named": true,
-    "extra": true
+    "named": true
   },
   {
     "type": "escape_sequence",

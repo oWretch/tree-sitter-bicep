@@ -1,0 +1,1156 @@
+==============================================
+Simple import statement
+==============================================
+
+import { foo } from './bar.bicep'
+
+---
+
+(infrastructure
+  (import_functionality
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Simple alias import statement
+==============================================
+
+import { foo as bar } from './bar.bicep'
+
+---
+
+(infrastructure
+  (import_functionality
+    (identifier)
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Simple wildcard import statement
+==============================================
+
+import * as bar from './bar.bicep'
+
+---
+
+(infrastructure
+  (import_functionality
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Import multiple identifiers
+==============================================
+
+import { foo, bar, baz } from './utils.bicep'
+
+---
+
+(infrastructure
+  (import_functionality
+    (identifier)
+    (identifier)
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Import with statement
+==============================================
+
+import 'kubernetes@1.0.0' with {
+  namespace: 'default'
+  kubeConfig: ''
+}
+
+---
+
+(infrastructure
+  (import_with_statement
+    (string
+      (string_content))
+    (object
+      (object_property
+        (identifier)
+        (string
+          (string_content)))
+      (object_property
+        (identifier)
+        (string)))))
+
+==============================================
+Import statement with alias
+==============================================
+
+import 'az@1.0.0' as az
+
+---
+
+(infrastructure
+  (import_statement
+    (string
+      (string_content))
+    (identifier)))
+
+==============================================
+Using statement with bicep file
+==============================================
+
+using './main.bicep'
+
+---
+
+(infrastructure
+  (using_statement
+    (string
+      (string_content))))
+
+==============================================
+Using statement with template spec
+==============================================
+
+using 'ts:sub/rg/provider/name:version'
+
+---
+
+(infrastructure
+  (using_statement
+    (string
+      (string_content))))
+
+==============================================
+Using statement with module registry
+==============================================
+
+using 'br:example.azurecr.io/module:v1'
+
+---
+
+(infrastructure
+  (using_statement
+    (string
+      (string_content))))
+
+==============================================
+Simple variable assignment
+==============================================
+
+var foo = null
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (null)))
+
+==============================================
+Simple string assignment
+==============================================
+
+var foo = 'aaa'
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Empty string assignment
+==============================================
+
+var foo = ''
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string)))
+
+==============================================
+String escape sequence
+==============================================
+
+var foo = 'a\'a'
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content)
+      (escape_sequence)
+      (string_content))))
+
+==============================================
+Multiline string assignment
+==============================================
+
+var foo = '''aaa'''
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Object assignment
+==============================================
+
+var foo = {
+  name: 'hello'
+  location: true
+}
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (object
+      (object_property
+        (identifier)
+        (string
+          (string_content)))
+      (object_property
+        (identifier)
+        (boolean)))))
+
+==============================================
+Nested object assignment
+==============================================
+
+var foo = {
+  parent: {
+    child: 'value'
+    nested: {
+      deep: true
+    }
+  }
+}
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (object
+      (object_property
+        (identifier)
+        (object
+          (object_property
+            (identifier)
+            (string
+              (string_content)))
+          (object_property
+            (identifier)
+            (object
+              (object_property
+                (identifier)
+                (boolean)))))))))
+
+==============================================
+Numbers
+==============================================
+
+var myVar = 123
+var myVar2 = -454
+var mvVar3 = 0
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (number))
+  (variable_declaration
+    (identifier)
+    (number))
+  (variable_declaration
+    (identifier)
+    (number)))
+
+==============================================
+Booleans
+==============================================
+
+var myVar = false
+var myVar2 = true
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (boolean))
+  (variable_declaration
+    (identifier)
+    (boolean)))
+
+==============================================
+Arrays
+==============================================
+
+var myArray = [
+  5983
+  3923
+  -241
+]
+
+var myEmptyArray = [
+]
+
+var myMixedArray = [
+  myVariable
+  'hello!'
+  true
+  1255
+]
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (array
+      (number)
+      (number)
+      (number)))
+  (variable_declaration
+    (identifier)
+    (array))
+  (variable_declaration
+    (identifier)
+    (array
+      (identifier)
+      (string
+        (string_content))
+      (boolean)
+      (number))))
+
+==============================================
+Function call on property
+==============================================
+
+var a = storageAccountVulnerabilityAssessments.listKeys().foo
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (member_expression
+      (call_expression
+        (member_expression
+          (identifier)
+          (property_identifier))
+        (arguments))
+      (property_identifier))))
+
+==============================================
+Function call with arguments
+==============================================
+
+var a = concat('hello', 'world')
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (call_expression
+      (identifier)
+      (arguments
+        (string
+          (string_content))
+        (string
+          (string_content))))))
+
+==============================================
+Unicode escape sequence
+==============================================
+
+var surrogate_codepoint = '\u{10437}'
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (escape_sequence))))
+
+==============================================
+Multiline string with quote
+==============================================
+
+var foo = '''hello'world'''
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+String containing dollar
+==============================================
+
+var foo = 'about $3 fiddy'
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content)
+      (string_content)
+      (string_content))))
+
+==============================================
+String starting with dollar
+==============================================
+
+var foo = '$3 fiddy'
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content)
+      (string_content))))
+
+==============================================
+String ending with dollar
+==============================================
+
+var foo = 'mucho $'
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content)
+      (string_content))))
+
+==============================================
+String in interpolation
+==============================================
+
+var stringInString = 'abc${'def'}'
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content)
+      (interpolation
+        (string
+          (string_content))))))
+
+==============================================
+Complex string interpolation
+==============================================
+
+var a = 'Hello ${name}, you are ${age} years old'
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content)
+      (interpolation
+        (identifier))
+      (string_content)
+      (interpolation
+        (identifier))
+      (string_content))))
+
+==============================================
+String literal with starting comment
+==============================================
+
+var a = '/*'
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Multiline string literal with starting comment
+==============================================
+
+var a = '''/*'''
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Mixed array
+==============================================
+
+var a = [
+    true
+    [
+      'inner'
+      false
+    ]
+  ]
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (array
+      (boolean)
+      (array
+        (string
+          (string_content))
+        (boolean)))))
+
+==============================================
+Line comment
+==============================================
+
+// This is a comment
+var foo = 'bar'
+
+---
+
+(infrastructure
+  (comment)
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Block comment
+==============================================
+
+/* This is a
+   block comment */
+var foo = 'bar'
+
+---
+
+(infrastructure
+  (comment)
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Ternary expression
+==============================================
+
+var a = condition ? 'yes' : 'no'
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (ternary_expression
+      (identifier)
+      (string
+        (string_content))
+      (string
+        (string_content)))))
+
+==============================================
+Binary expression
+==============================================
+
+var a = 1 + 2
+var b = x && y
+var c = a == b
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (binary_expression
+      (number)
+      (number)))
+  (variable_declaration
+    (identifier)
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (variable_declaration
+    (identifier)
+    (binary_expression
+      (identifier)
+      (identifier))))
+
+==============================================
+Null coalescing expression
+==============================================
+
+var a = x ?? 'default'
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (binary_expression
+      (identifier)
+      (string
+        (string_content)))))
+
+==============================================
+Unary expression
+==============================================
+
+var a = !condition
+var b = -number
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (unary_expression
+      (identifier)))
+  (variable_declaration
+    (identifier)
+    (unary_expression
+      (identifier))))
+
+==============================================
+Member expression with safe access
+==============================================
+
+var a = obj.?prop
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (member_expression
+      (identifier)
+      (property_identifier))))
+
+==============================================
+Subscript expression
+==============================================
+
+var a = arr[0]
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (subscript_expression
+      (identifier)
+      (number))))
+
+==============================================
+For loop in array
+==============================================
+
+var items = [for item in collection: item.name]
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (for_statement
+      (identifier)
+      (identifier)
+      (member_expression
+        (identifier)
+        (property_identifier)))))
+
+==============================================
+For loop with index
+==============================================
+
+var items = [for (item, index) in collection: '${item}-${index}']
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (for_statement
+      (for_loop_parameters
+        (loop_variable)
+        (loop_enumerator))
+      (identifier)
+      (string
+        (interpolation
+          (identifier))
+        (string_content)
+        (interpolation
+          (identifier))))))
+
+==============================================
+Lambda expression
+==============================================
+
+var fn = x => x + 1
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (lambda_expression
+      (identifier)
+      (binary_expression
+        (identifier)
+        (number)))))
+
+==============================================
+Diagnostic comment
+==============================================
+
+#disable-next-line no-unused-vars
+var a = 'test'
+
+---
+
+(infrastructure
+  (diagnostic_comment)
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Object with string key
+==============================================
+
+var obj = {
+  'string-key': 'value'
+}
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (object
+      (object_property
+        (string
+          (string_content))
+        (string
+          (string_content))))))
+
+==============================================
+Parameter declaration
+==============================================
+
+param location = 'eastus'
+
+---
+
+(infrastructure
+  (parameter_declaration
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Parameter with object value
+==============================================
+
+param tags = {
+  environment: 'dev'
+  owner: 'platform'
+}
+
+---
+
+(infrastructure
+  (parameter_declaration
+    (identifier)
+    (object
+      (object_property
+        (identifier)
+        (string
+          (string_content)))
+      (object_property
+        (identifier)
+        (string
+          (string_content))))))
+
+==============================================
+Parameter with array value
+==============================================
+
+param locations = [
+  'eastus'
+  'westus'
+]
+
+---
+
+(infrastructure
+  (parameter_declaration
+    (identifier)
+    (array
+      (string
+        (string_content))
+      (string
+        (string_content)))))
+
+==============================================
+Parameter with expression value
+==============================================
+
+param count = 2 + 3
+
+---
+
+(infrastructure
+  (parameter_declaration
+    (identifier)
+    (binary_expression
+      (number)
+      (number))))
+
+==============================================
+Parameter with function call value
+==============================================
+
+param uniqueSuffix = sys.uniqueString('seed')
+
+---
+
+(infrastructure
+  (parameter_declaration
+    (identifier)
+    (call_expression
+      (member_expression
+        (identifier)
+        (property_identifier))
+      (arguments
+        (string
+          (string_content))))))
+
+==============================================
+Parameter with boolean value
+==============================================
+
+param enableFeature = true
+
+---
+
+(infrastructure
+  (parameter_declaration
+    (identifier)
+    (boolean)))
+
+==============================================
+Parameter with integer value
+==============================================
+
+param instanceCount = 3
+
+---
+
+(infrastructure
+  (parameter_declaration
+    (identifier)
+    (number)))
+
+==============================================
+Parameter with null value
+==============================================
+
+param optionalValue = null
+
+---
+
+(infrastructure
+  (parameter_declaration
+    (identifier)
+    (null)))
+
+==============================================
+Parameter with string interpolation
+==============================================
+
+var prefix = 'dev'
+param name = '${prefix}-resource'
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content)))
+  (parameter_declaration
+    (identifier)
+    (string
+      (interpolation
+        (identifier))
+      (string_content))))
+
+==============================================
+Using none
+==============================================
+
+using none
+
+---
+
+(infrastructure
+  (using_statement))
+
+==============================================
+Using none with parameters
+==============================================
+
+using none
+
+param location = 'westus'
+param tags = {
+  environment: 'dev'
+}
+
+---
+
+(infrastructure
+  (using_statement)
+  (parameter_declaration
+    (identifier)
+    (string
+      (string_content)))
+  (parameter_declaration
+    (identifier)
+    (object
+      (object_property
+        (identifier)
+        (string
+          (string_content))))))
+
+==============================================
+Extends statement
+==============================================
+
+using './main.bicep'
+extends './base.bicepparam'
+
+---
+
+(infrastructure
+  (using_statement
+    (string
+      (string_content)))
+  (extends_statement
+    (string
+      (string_content))))
+
+==============================================
+Extends with parameter override
+==============================================
+
+using './main.bicep'
+extends '../shared.bicepparam'
+
+param environment = 'prod'
+
+---
+
+(infrastructure
+  (using_statement
+    (string
+      (string_content)))
+  (extends_statement
+    (string
+      (string_content)))
+  (parameter_declaration
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Spread in object
+==============================================
+
+param config = {
+  ...base.config
+  environment: 'prod'
+}
+
+---
+
+(infrastructure
+  (parameter_declaration
+    (identifier)
+    (object
+      (spread_expression
+        (member_expression
+          (identifier)
+          (property_identifier)))
+      (object_property
+        (identifier)
+        (string
+          (string_content))))))
+
+==============================================
+Spread in array
+==============================================
+
+param locations = [
+  ...base.locations
+  'centralus'
+]
+
+---
+
+(infrastructure
+  (parameter_declaration
+    (identifier)
+    (array
+      (spread_expression
+        (member_expression
+          (identifier)
+          (property_identifier)))
+      (string
+        (string_content)))))
+
+==============================================
+Nested spread in object
+==============================================
+
+param app = {
+  ...base.app
+  tags: {
+    ...base.app.tags
+    environment: 'prod'
+  }
+}
+
+---
+
+(infrastructure
+  (parameter_declaration
+    (identifier)
+    (object
+      (spread_expression
+        (member_expression
+          (identifier)
+          (property_identifier)))
+      (object_property
+        (identifier)
+        (object
+          (spread_expression
+            (member_expression
+              (member_expression
+                (identifier)
+                (property_identifier))
+              (property_identifier)))
+          (object_property
+            (identifier)
+            (string
+              (string_content))))))))
+
+==============================================
+Complete bicepparam file
+==============================================
+
+using './main.bicep'
+extends '../shared.bicepparam'
+
+var suffix = '-api'
+
+param namePrefix = 'Dev'
+param location = 'westus'
+param fullName = '${base.app.name}${suffix}'
+param tags = {
+  ...base.tags
+  environment: 'prod'
+  region: 'westus2'
+}
+
+---
+
+(infrastructure
+  (using_statement
+    (string
+      (string_content)))
+  (extends_statement
+    (string
+      (string_content)))
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content)))
+  (parameter_declaration
+    (identifier)
+    (string
+      (string_content)))
+  (parameter_declaration
+    (identifier)
+    (string
+      (string_content)))
+  (parameter_declaration
+    (identifier)
+    (string
+      (interpolation
+        (member_expression
+          (member_expression
+            (identifier)
+            (property_identifier))
+          (property_identifier)))
+      (interpolation
+        (identifier))))
+  (parameter_declaration
+    (identifier)
+    (object
+      (spread_expression
+        (member_expression
+          (identifier)
+          (property_identifier)))
+      (object_property
+        (identifier)
+        (string
+          (string_content)))
+      (object_property
+        (identifier)
+        (string
+          (string_content))))))
