@@ -565,3 +565,741 @@ output displayName string = myParent::myChild.properties.displayName
           (identifier))
         (property_identifier))
       (property_identifier))))
+
+==============================================
+Target scope assignment
+==============================================
+
+targetScope = 'subscription'
+
+---
+
+(infrastructure
+  (target_scope_assignment
+    (string
+      (string_content))))
+
+==============================================
+Using statement
+==============================================
+
+using 'main.bicep'
+
+---
+
+(infrastructure
+  (using_statement
+    (string
+      (string_content))))
+
+==============================================
+Metadata declaration
+==============================================
+
+metadata description = 'Creates a storage account'
+
+---
+
+(infrastructure
+  (metadata_declaration
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Parameter declaration
+==============================================
+
+param location string
+param storageName string = 'myStorage'
+
+---
+
+(infrastructure
+  (parameter_declaration
+    (identifier)
+    (type
+      (primitive_type)))
+  (parameter_declaration
+    (identifier)
+    (type
+      (primitive_type))
+    (string
+      (string_content))))
+
+==============================================
+Output declaration
+==============================================
+
+output storageId string = storageAccount.id
+
+---
+
+(infrastructure
+  (output_declaration
+    (identifier)
+    (type
+      (primitive_type))
+    (member_expression
+      (identifier)
+      (property_identifier))))
+
+==============================================
+Module declaration
+==============================================
+
+module stgModule 'storageAccount.bicep' = {
+  name: 'storageDeploy'
+  params: {
+    location: 'eastus'
+  }
+}
+
+---
+
+(infrastructure
+  (module_declaration
+    (identifier)
+    (string
+      (string_content))
+    (object
+      (object_property
+        (identifier)
+        (string
+          (string_content)))
+      (object_property
+        (identifier)
+        (object
+          (object_property
+            (identifier)
+            (string
+              (string_content))))))))
+
+==============================================
+Module declaration with condition
+==============================================
+
+module stgModule 'storageAccount.bicep' = if (deployStorage) {
+  name: 'storageDeploy'
+}
+
+---
+
+(infrastructure
+  (module_declaration
+    (identifier)
+    (string
+      (string_content))
+    (if_statement
+      (parenthesized_expression
+        (identifier))
+      (object
+        (object_property
+          (identifier)
+          (string
+            (string_content)))))))
+
+==============================================
+Module declaration with for loop
+==============================================
+
+module stgModule 'storageAccount.bicep' = [for name in storageNames: {
+  name: name
+}]
+
+---
+
+(infrastructure
+  (module_declaration
+    (identifier)
+    (string
+      (string_content))
+    (for_statement
+      (identifier)
+      (identifier)
+      (object
+        (object_property
+          (identifier)
+          (identifier))))))
+
+==============================================
+Resource declaration with existing
+==============================================
+
+resource stg 'Microsoft.Storage/storageAccounts@2021-02-01' existing = {
+  name: 'myStorage'
+}
+
+---
+
+(infrastructure
+  (resource_declaration
+    (identifier)
+    (string
+      (string_content))
+    (object
+      (object_property
+        (identifier)
+        (string
+          (string_content))))))
+
+==============================================
+Resource declaration with condition
+==============================================
+
+resource sa 'Microsoft.Storage/storageAccounts@2021-02-01' = if (deployStorage) {
+  name: 'myStorage'
+}
+
+---
+
+(infrastructure
+  (resource_declaration
+    (identifier)
+    (string
+      (string_content))
+    (if_statement
+      (parenthesized_expression
+        (identifier))
+      (object
+        (object_property
+          (identifier)
+          (string
+            (string_content)))))))
+
+==============================================
+Type declaration
+==============================================
+
+type myString = string
+
+---
+
+(infrastructure
+  (type_declaration
+    (identifier)
+    (identifier)))
+
+==============================================
+Type declaration with union
+==============================================
+
+type color = 'red' | 'blue' | 'green'
+
+---
+
+(infrastructure
+  (type_declaration
+    (identifier)
+    (binary_expression
+      left: (binary_expression
+        left: (string
+          (string_content))
+        right: (string
+          (string_content)))
+      right: (string
+        (string_content)))))
+
+==============================================
+Type declaration with nullable
+==============================================
+
+type nullableString = string?
+
+---
+
+(infrastructure
+  (type_declaration
+    (identifier)
+    (nullable_type
+      (primitive_type))))
+
+==============================================
+Type declaration with array type
+==============================================
+
+type stringArray = string[]
+
+---
+
+(infrastructure
+  (type_declaration
+    (identifier)
+    (array_type
+      (type
+        (primitive_type)))))
+
+==============================================
+User defined function
+==============================================
+
+func greet(name string) string => 'Hello ${name}'
+
+---
+
+(infrastructure
+  (user_defined_function
+    name: (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (type
+          (primitive_type))))
+    returns: (type
+      (primitive_type))
+    (string
+      (string_content)
+      (interpolation
+        (identifier)))))
+
+==============================================
+Test block
+==============================================
+
+test testMain 'main.bicep' = {
+  params: {
+    location: 'eastus'
+  }
+}
+
+---
+
+(infrastructure
+  (test_block
+    (identifier)
+    (string
+      (string_content))
+    (object
+      (object_property
+        (identifier)
+        (object
+          (object_property
+            (identifier)
+            (string
+              (string_content))))))))
+
+==============================================
+Assert statement
+==============================================
+
+assert nameLength = length(name) > 3
+
+---
+
+(infrastructure
+  (assert_statement
+    name: (identifier)
+    (binary_expression
+      left: (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (identifier)))
+      right: (number))))
+
+==============================================
+Decorator
+==============================================
+
+@description('My parameter')
+param myParam string
+
+---
+
+(infrastructure
+  (decorators
+    (decorator
+      (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (string
+            (string_content))))))
+  (parameter_declaration
+    (identifier)
+    (type
+      (primitive_type))))
+
+==============================================
+Multiple decorators
+==============================================
+
+@description('My parameter')
+@minLength(3)
+@maxLength(24)
+param storageName string
+
+---
+
+(infrastructure
+  (decorators
+    (decorator
+      (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (string
+            (string_content)))))
+    (decorator
+      (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (number))))
+    (decorator
+      (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (number)))))
+  (parameter_declaration
+    (identifier)
+    (type
+      (primitive_type))))
+
+==============================================
+Decorator with no arguments
+==============================================
+
+@secure()
+param password string
+
+---
+
+(infrastructure
+  (decorators
+    (decorator
+      (call_expression
+        function: (identifier)
+        arguments: (arguments))))
+  (parameter_declaration
+    (identifier)
+    (type
+      (primitive_type))))
+
+==============================================
+Ternary expression
+==============================================
+
+var x = condition ? 'yes' : 'no'
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (ternary_expression
+      condition: (identifier)
+      consequence: (string
+        (string_content))
+      alternative: (string
+        (string_content)))))
+
+==============================================
+Binary expression
+==============================================
+
+var x = 1 + 2
+var y = a && b
+var z = c ?? d
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (binary_expression
+      left: (number)
+      right: (number)))
+  (variable_declaration
+    (identifier)
+    (binary_expression
+      left: (identifier)
+      right: (identifier)))
+  (variable_declaration
+    (identifier)
+    (binary_expression
+      left: (identifier)
+      right: (identifier))))
+
+==============================================
+Unary expression
+==============================================
+
+var x = !condition
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (unary_expression
+      argument: (identifier))))
+
+==============================================
+Lambda expression
+==============================================
+
+var doubled = map(items, item => item * 2)
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (call_expression
+      function: (identifier)
+      arguments: (arguments
+        (identifier)
+        (lambda_expression
+          (identifier)
+          (binary_expression
+            left: (identifier)
+            right: (number)))))))
+
+==============================================
+Subscript expression
+==============================================
+
+var x = myArray[0]
+var y = myObj['key']
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (subscript_expression
+      object: (identifier)
+      index: (number)))
+  (variable_declaration
+    (identifier)
+    (subscript_expression
+      object: (identifier)
+      index: (string
+        (string_content)))))
+
+==============================================
+Safe member access
+==============================================
+
+var x = obj.?property
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (member_expression
+      object: (identifier)
+      property: (property_identifier))))
+
+==============================================
+Safe subscript access
+==============================================
+
+var x = myArray[?0]
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (subscript_expression
+      object: (identifier)
+      index: (number))))
+
+==============================================
+Nullable return type
+==============================================
+
+var x = tryGetValue()!
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (call_expression
+      function: (identifier)
+      arguments: (arguments)
+      (nullable_return_type))))
+
+==============================================
+Import with statement
+==============================================
+
+import 'kubernetes@1.0.0' with {
+  kubeConfig: 'config'
+  namespace: 'default'
+} as k8s
+
+---
+
+(infrastructure
+  (import_with_statement
+    (string
+      (string_content))
+    (object
+      (object_property
+        (identifier)
+        (string
+          (string_content)))
+      (object_property
+        (identifier)
+        (string
+          (string_content))))
+    (identifier)))
+
+==============================================
+For loop with index
+==============================================
+
+resource sa 'Microsoft.Storage/storageAccounts@2019-06-01' = [for (name, index) in storageNames: {
+  name: name
+}]
+
+---
+
+(infrastructure
+  (resource_declaration
+    (identifier)
+    (string
+      (string_content))
+    (for_statement
+      (for_loop_parameters
+        (loop_variable)
+        (loop_enumerator))
+      (identifier)
+      (object
+        (object_property
+          (identifier)
+          (identifier))))))
+
+==============================================
+Parameterized resource type
+==============================================
+
+output res resource<'Microsoft.Storage/storageAccounts@2021-02-01'> = stg
+
+---
+
+(infrastructure
+  (output_declaration
+    (identifier)
+    (type
+      (parameterized_type
+        (type_arguments
+          (string
+            (string_content)))))
+    (identifier)))
+
+==============================================
+Diagnostic comment
+==============================================
+
+#disable-next-line no-unused-params
+param unused string
+
+---
+
+(infrastructure
+  (diagnostic_comment)
+  (parameter_declaration
+    (identifier)
+    (type
+      (primitive_type))))
+
+==============================================
+Line comment
+==============================================
+
+// this is a comment
+var x = 1
+
+---
+
+(infrastructure
+  (comment)
+  (variable_declaration
+    (identifier)
+    (number)))
+
+==============================================
+Block comment
+==============================================
+
+/* this is a
+   block comment */
+var x = 1
+
+---
+
+(infrastructure
+  (comment)
+  (variable_declaration
+    (identifier)
+    (number)))
+
+==============================================
+Parenthesized expression
+==============================================
+
+var x = (1 + 2) * 3
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (binary_expression
+      left: (parenthesized_expression
+        (binary_expression
+          left: (number)
+          right: (number)))
+      right: (number))))
+
+==============================================
+Non-null assertion on member access
+==============================================
+
+var x = obj!.property
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (member_expression
+      object: (identifier)
+      property: (property_identifier))))
+
+==============================================
+Negated type in parameter
+==============================================
+
+param x !string
+
+---
+
+(infrastructure
+  (parameter_declaration
+    (identifier)
+    (type
+      (negated_type
+        (type
+          (primitive_type))))))
+
+==============================================
+Parenthesized type
+==============================================
+
+type grouped = (string | int)[]
+
+---
+
+(infrastructure
+  (type_declaration
+    (identifier)
+    (array_type
+      (type
+        (parenthesized_type
+          (type
+            (union_type
+              (primitive_type)
+              (primitive_type))))))))
