@@ -503,6 +503,10 @@
           {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "string",
+            "named": true
           }
         ]
       }
@@ -528,6 +532,10 @@
         "types": [
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "string",
             "named": true
           }
         ]
@@ -1159,11 +1167,6 @@
     }
   },
   {
-    "type": "string_content",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "subscript_expression",
     "named": true,
     "fields": {
@@ -1551,6 +1554,10 @@
         {
           "type": "identifier",
           "named": true
+        },
+        {
+          "type": "type",
+          "named": true
         }
       ]
     }
@@ -1830,6 +1837,10 @@
   {
     "type": "string",
     "named": false
+  },
+  {
+    "type": "string_content",
+    "named": true
   },
   {
     "type": "targetScope",

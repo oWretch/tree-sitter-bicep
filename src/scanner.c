@@ -82,6 +82,18 @@ bool tree_sitter_bicep_external_scanner_scan(void *payload, TSLexer *lexer, cons
                     }
                 }
             }
+            if (lexer->lookahead == '$') {
+                lexer->mark_end(lexer);
+                advance(lexer);
+                if (lexer->lookahead == '{') {
+                    // ${ starts an interpolation, return content before it
+                    lexer->result_symbol = MULTILINE_STRING_CONTENT;
+                    return advanced_once;
+                }
+                // Standalone $, continue scanning content
+                advanced_once = true;
+                continue;
+            }
             advance(lexer);
             advanced_once = true;
         }

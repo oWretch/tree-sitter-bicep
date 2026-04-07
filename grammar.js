@@ -120,13 +120,13 @@ module.exports = grammar({
 
     extension_statement: $ => seq(
       'extension',
-      field('name', $.identifier),
+      field('name', choice($.identifier, $.string)),
       optional(seq('as', field('alias', $.identifier))),
     ),
 
     extension_with_statement: $ => seq(
       'extension',
-      field('name', $.identifier),
+      field('name', choice($.identifier, $.string)),
       'with',
       field('properties', $.object),
       optional(seq('as', field('alias', $.identifier))),
@@ -207,6 +207,7 @@ module.exports = grammar({
     variable_declaration: $ => seq(
       'var',
       $.identifier,
+      optional($.type),
       '=',
       $.expression,
       optional('!'),
@@ -448,11 +449,13 @@ module.exports = grammar({
 
     _multiline_string_literal: $ => seq(
       '\'\'\'',
-      alias($.multiline_string_content, $.string_content),
+      repeat(choice(
+        $.interpolation,
+        alias('$', $.string_content),
+        alias($._multiline_string_content, $.string_content),
+      )),
       '\'\'\'',
     ),
-
-    multiline_string_content: $ => repeat1($._multiline_string_content),
 
     _escape_sequence: $ =>
       choice(

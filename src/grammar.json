@@ -145,8 +145,17 @@
           "type": "FIELD",
           "name": "name",
           "content": {
-            "type": "SYMBOL",
-            "name": "identifier"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "identifier"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "string"
+              }
+            ]
           }
         },
         {
@@ -187,8 +196,17 @@
           "type": "FIELD",
           "name": "name",
           "content": {
-            "type": "SYMBOL",
-            "name": "identifier"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "identifier"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "string"
+              }
+            ]
           }
         },
         {
@@ -643,6 +661,18 @@
         {
           "type": "SYMBOL",
           "name": "identifier"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "type"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -2517,26 +2547,40 @@
           "value": "'''"
         },
         {
-          "type": "ALIAS",
+          "type": "REPEAT",
           "content": {
-            "type": "SYMBOL",
-            "name": "multiline_string_content"
-          },
-          "named": true,
-          "value": "string_content"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "interpolation"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "STRING",
+                  "value": "$"
+                },
+                "named": true,
+                "value": "string_content"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_multiline_string_content"
+                },
+                "named": true,
+                "value": "string_content"
+              }
+            ]
+          }
         },
         {
           "type": "STRING",
           "value": "'''"
         }
       ]
-    },
-    "multiline_string_content": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "SYMBOL",
-        "name": "_multiline_string_content"
-      }
     },
     "_escape_sequence": {
       "type": "CHOICE",

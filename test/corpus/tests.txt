@@ -1572,3 +1572,155 @@ var x = myArray[?^1]
     (subscript_expression
       object: (identifier)
       index: (number))))
+
+==============================================
+Typed variable declaration
+==============================================
+
+var storageName string = 'myStorage'
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (type
+      (primitive_type))
+    (string
+      (string_content))))
+
+==============================================
+Typed variable declaration with complex type
+==============================================
+
+var config object = {
+  name: 'hello'
+}
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (type
+      (primitive_type))
+    (object
+      (object_property
+        (identifier)
+        (string
+          (string_content))))))
+
+==============================================
+Extension with string specification
+==============================================
+
+extension 'kubernetes@1.0.0'
+
+---
+
+(infrastructure
+  (extension_statement
+    name: (string
+      (string_content))))
+
+==============================================
+Extension with string specification and alias
+==============================================
+
+extension 'kubernetes@1.0.0' as k8s
+
+---
+
+(infrastructure
+  (extension_statement
+    name: (string
+      (string_content))
+    alias: (identifier)))
+
+==============================================
+Extension with string specification and properties
+==============================================
+
+extension 'kubernetes@1.0.0' with {
+  kubeConfig: 'config'
+} as k8s
+
+---
+
+(infrastructure
+  (extension_with_statement
+    name: (string
+      (string_content))
+    properties: (object
+      (object_property
+        (identifier)
+        (string
+          (string_content))))
+    alias: (identifier)))
+
+==============================================
+Multiline string with interpolation
+==============================================
+
+var greeting = '''hello ${name} world'''
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content)
+      (interpolation
+        (identifier))
+      (string_content))))
+
+==============================================
+Multiline string with multiple interpolations
+==============================================
+
+var msg = '''${first} and ${second}'''
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (interpolation
+        (identifier))
+      (string_content)
+      (interpolation
+        (identifier)))))
+
+==============================================
+Multiline string with dollar sign
+==============================================
+
+var price = '''costs $5'''
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Multiline string with interpolation and expression
+==============================================
+
+var result = '''value: ${a + b}'''
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content)
+      (interpolation
+        (binary_expression
+          left: (identifier)
+          right: (identifier))))))
