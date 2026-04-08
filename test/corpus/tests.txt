@@ -1530,20 +1530,6 @@ output res resourceOutput<'Microsoft.Storage/storageAccounts@2021-02-01'> = stg
     (identifier)))
 
 ==============================================
-Unary plus operator
-==============================================
-
-var x = +5
-
----
-
-(infrastructure
-  (variable_declaration
-    (identifier)
-    (unary_expression
-      argument: (number))))
-
-==============================================
 From-end subscript expression
 ==============================================
 
