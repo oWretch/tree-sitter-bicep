@@ -276,3 +276,47 @@ var myMixedArray = [
       (boolean)
       (number))))
 
+==============================================
+Directive statements
+==============================================
+
+#disable-next-line no-unused-vars BCP138
+var foo = 'aaa'
+#disable-diagnostics no-unused-params BCP335
+#restore-diagnostics no-unused-params BCP335
+
+---
+
+(infrastructure
+  (directive_statement
+    (disable_next_line_directive
+      (directive_identifier)
+      (directive_identifier)))
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content)))
+  (directive_statement
+    (disable_diagnostics_directive
+      (directive_identifier)
+      (directive_identifier)))
+  (directive_statement
+    (restore_diagnostics_directive
+      (directive_identifier)
+      (directive_identifier))))
+
+==============================================
+Invalid directive with no identifiers
+==============================================
+
+#disable-next-line
+var foo = 'aaa'
+
+---
+
+(infrastructure
+  (ERROR)
+  (variable_declaration
+    (identifier)
+    (string
+      (string_content))))
