@@ -2739,7 +2739,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "expression"
+              "name": "identifier"
             },
             {
               "type": "SYMBOL",
@@ -2748,6 +2748,18 @@
             {
               "type": "SYMBOL",
               "name": "array_type"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "object"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "member_expression"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "parameterized_type"
             },
             {
               "type": "SYMBOL",
@@ -2798,29 +2810,12 @@
         "type": "SEQ",
         "members": [
           {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "PREC",
-                    "value": 2,
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "_type_not_union"
-                    }
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "expression"
-                  }
-                ]
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
+            "type": "PREC",
+            "value": 2,
+            "content": {
+              "type": "SYMBOL",
+              "name": "_type_not_union"
+            }
           },
           {
             "type": "REPEAT1",
@@ -2835,21 +2830,12 @@
                     "value": "|"
                   },
                   {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "PREC",
-                        "value": 2,
-                        "content": {
-                          "type": "SYMBOL",
-                          "name": "_type_not_union"
-                        }
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "expression"
-                      }
-                    ]
+                    "type": "PREC",
+                    "value": 2,
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_type_not_union"
+                    }
                   }
                 ]
               }
@@ -3036,15 +3022,6 @@
     [
       "primary_expression",
       "_type_not_union"
-    ],
-    [
-      "primary_expression",
-      "_type_not_union",
-      "_lhs_expression"
-    ],
-    [
-      "binary_expression",
-      "union_type"
     ],
     [
       "type",

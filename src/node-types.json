@@ -767,7 +767,19 @@
           "named": true
         },
         {
-          "type": "expression",
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "member_expression",
+          "named": true
+        },
+        {
+          "type": "object",
+          "named": true
+        },
+        {
+          "type": "parameterized_type",
           "named": true
         },
         {
@@ -1331,10 +1343,6 @@
         },
         {
           "type": "boolean",
-          "named": true
-        },
-        {
-          "type": "expression",
           "named": true
         },
         {
