@@ -8,6 +8,7 @@
 
 typedef enum {
     EXTERNAL_ASTERISK,
+    IMPORT_LINE_BREAK,
     MULTILINE_STRING_CONTENT,
 } TokenType;
 
@@ -28,9 +29,18 @@ static unsigned scanner_serialize(Scanner *scanner, char *buffer) {
     return 1;
 }
 
+<<<<<<< HEAD:common/scanner.h
 static void scanner_deserialize(Scanner *scanner, const char *buffer, unsigned length) {
     if (length == 1) {
         scanner->quote_before_end_count = buffer[0];
+=======
+void tree_sitter_bicep_external_scanner_deserialize(void *payload, const char *buffer, unsigned length) {
+    Scanner *scanner = (Scanner *)payload;
+    scanner->quote_before_end_count = 0;
+
+    if (length == 1) {
+        scanner->quote_before_end_count = (uint8_t)buffer[0];
+>>>>>>> origin/patched-main:src/scanner.c
     }
 }
 
@@ -43,9 +53,37 @@ static bool scanner_scan(Scanner *scanner, TSLexer *lexer, const bool *valid_sym
             advance(lexer);
             lexer->mark_end(lexer);
             lexer->result_symbol = EXTERNAL_ASTERISK;
-            if (lexer->lookahead == ':') {
-                return true;
+            return true;
+        }
+    }
+
+    if (valid_symbols[IMPORT_LINE_BREAK]) {
+        while (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\v' || lexer->lookahead == '\f') {
+            skip(lexer);
+        }
+
+        if (lexer->lookahead == '\r' || lexer->lookahead == '\n') {
+            do {
+                if (lexer->lookahead == '\r') {
+                    advance(lexer);
+                    if (lexer->lookahead == '\n') {
+                        advance(lexer);
+                    }
+                } else {
+                    advance(lexer);
+                }
+            } while (lexer->lookahead == '\r' || lexer->lookahead == '\n');
+
+            while (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\v' || lexer->lookahead == '\f') {
+                skip(lexer);
             }
+
+            if (lexer->lookahead == '}' || lexer->lookahead == 0) {
+                return false;
+            }
+
+            lexer->result_symbol = IMPORT_LINE_BREAK;
+            return true;
         }
     }
 
