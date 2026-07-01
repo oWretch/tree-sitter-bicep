@@ -11,4 +11,5 @@
   (ternary_expression)
   (string)
   (comment)
+  (diagnostic_comment)
 ] @fold

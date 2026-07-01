@@ -453,6 +453,7 @@ module.exports = function defineGrammar(dialect) {
         field('object', choice($.expression, $.primary_expression)),
         '[',
         optional('?'),
+        optional('^'),
         field('index', $.expression),
         ']',
       )),

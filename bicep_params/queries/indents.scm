@@ -23,4 +23,5 @@
 [
   (ERROR)
   (comment)
+  (diagnostic_comment)
 ] @indent.auto
