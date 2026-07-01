@@ -55,6 +55,7 @@ module.exports = grammar({
 
   externals: $ => [
     $._external_asterisk,
+    $._import_line_break,
     $._multiline_string_content,
   ],
 
@@ -149,7 +150,12 @@ module.exports = grammar({
     import_functionality: $ => seq(
       'import',
       choice(
-        seq('{', commaSep1(choice(seq($.identifier, 'as', $.identifier), $.identifier)), '}'),
+        seq(
+          '{',
+          commaSep1(choice(seq($.identifier, 'as', $.identifier), $.identifier)),
+          repeat(seq($._import_line_break, commaSep1(choice(seq($.identifier, 'as', $.identifier), $.identifier)))),
+          '}',
+        ),
         seq('*', 'as', $.identifier),
       ),
       'from',
