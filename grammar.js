@@ -58,7 +58,6 @@ module.exports = grammar({
 
   extras: $ => [
     $.comment,
-    $.diagnostic_comment,
     /\s/,
   ],
 
@@ -85,6 +84,7 @@ module.exports = grammar({
 
     statement: $ => choice(
       $.decorators,
+      $.directive_statement,
       $.declaration,
       $.import_statement,
       $.import_with_statement,
@@ -111,7 +111,7 @@ module.exports = grammar({
       $.identifier,
       $.string,
       '=',
-      choice($.if_statement, $.object, $.for_statement),
+      choice(alias($.same_line_if_statement, $.if_statement), $.object, $.for_statement),
     ),
 
     import_statement: $ => seq(
@@ -142,6 +142,29 @@ module.exports = grammar({
 
     target_scope_assignment: $ => seq('targetScope', '=', $.string),
 
+    directive_statement: $ => choice(
+      $.disable_next_line_directive,
+      $.disable_diagnostics_directive,
+      $.restore_diagnostics_directive,
+    ),
+
+    disable_next_line_directive: $ => seq(
+      '#disable-next-line',
+      repeat1(seq(/[ \t]+/, $.directive_identifier)),
+    ),
+
+    disable_diagnostics_directive: $ => seq(
+      '#disable-diagnostics',
+      repeat1(seq(/[ \t]+/, $.directive_identifier)),
+    ),
+
+    restore_diagnostics_directive: $ => seq(
+      '#restore-diagnostics',
+      repeat1(seq(/[ \t]+/, $.directive_identifier)),
+    ),
+
+    directive_identifier: _ => /[a-zA-Z][a-zA-Z0-9-]*/,
+
     metadata_declaration: $ => seq(
       'metadata',
       $.identifier,
@@ -170,7 +193,7 @@ module.exports = grammar({
       $.string,
       optional('existing'),
       '=',
-      choice($.if_statement, $.object, $.for_statement),
+      choice(alias($.same_line_if_statement, $.if_statement), $.object, $.for_statement),
     ),
 
     type_declaration: $ => seq(
@@ -299,6 +322,11 @@ module.exports = grammar({
     ),
 
     if_statement: $ => seq('if', $.parenthesized_expression, $.object),
+    same_line_if_statement: $ => seq(
+      alias(token.immediate(/[ \t]*if/), 'if'),
+      $.parenthesized_expression,
+      $.object,
+    ),
 
     _lhs_expression: $ => prec(-1, choice(
       $.member_expression,
@@ -537,7 +565,6 @@ module.exports = grammar({
         '/',
       ),
     )),
-    diagnostic_comment: _ => token(prec(-1, seq('#', /.*/))),
   },
 });
 
