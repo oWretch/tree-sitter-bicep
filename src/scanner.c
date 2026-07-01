@@ -5,6 +5,7 @@
 
 typedef enum {
     EXTERNAL_ASTERISK,
+    IMPORT_LINE_BREAK,
     MULTILINE_STRING_CONTENT,
 } TokenType;
 
@@ -47,6 +48,36 @@ bool tree_sitter_bicep_external_scanner_scan(void *payload, TSLexer *lexer, cons
             if (lexer->lookahead == ':') {
                 return true;
             }
+        }
+    }
+
+    if (valid_symbols[IMPORT_LINE_BREAK]) {
+        while (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\v' || lexer->lookahead == '\f') {
+            skip(lexer);
+        }
+
+        if (lexer->lookahead == '\r' || lexer->lookahead == '\n') {
+            do {
+                if (lexer->lookahead == '\r') {
+                    advance(lexer);
+                    if (lexer->lookahead == '\n') {
+                        advance(lexer);
+                    }
+                } else {
+                    advance(lexer);
+                }
+            } while (lexer->lookahead == '\r' || lexer->lookahead == '\n');
+
+            while (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\v' || lexer->lookahead == '\f') {
+                skip(lexer);
+            }
+
+            if (lexer->lookahead == '}' || lexer->lookahead == 0) {
+                return false;
+            }
+
+            lexer->result_symbol = IMPORT_LINE_BREAK;
+            return true;
         }
     }
 
