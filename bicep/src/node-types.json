@@ -1769,7 +1769,11 @@
     "named": true
   },
   {
+<<<<<<< HEAD:bicep/src/node-types.json
+    "type": "diagnostic_comment",
+=======
     "type": "directive_identifier",
+>>>>>>> origin/patched-main:src/node-types.json
     "named": true
   },
   {

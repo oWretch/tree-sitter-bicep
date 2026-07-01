@@ -24,5 +24,6 @@ type Language = {
   nodeTypeInfo: NodeInfo[];
 };
 
-declare const language: Language;
-export = language;
+declare const bicep: Language;
+declare const bicep_params: Language;
+export = {bicep, bicep_params}
