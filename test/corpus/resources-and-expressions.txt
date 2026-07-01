@@ -758,3 +758,31 @@ output displayName string = myParent::myChild.properties.displayName
           (identifier))
         (property_identifier))
       (property_identifier))))
+Invalid newline between = and if for resource
+:error
+==============================================
+
+param deployZone bool = true
+
+resource dnsZone 'Microsoft.Network/dnsZones@2023-07-01-preview' =
+  if (deployZone) {
+    name: 'myZone'
+    location: 'global'
+  }
+
+---
+
+==============================================
+Invalid newline between = and if for module
+:error
+==============================================
+
+param deployModule bool = true
+
+module webModule './webApp.bicep' =
+  if (deployModule) {
+    name: 'webDeploy'
+    params: {}
+  }
+
+---
