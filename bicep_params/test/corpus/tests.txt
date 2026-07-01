@@ -684,6 +684,27 @@ var a = arr[0]
       (number))))
 
 ==============================================
+Reverse index subscript expression
+==============================================
+
+var a = arr[^1]
+var b = arr[?^1]
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (subscript_expression
+      (identifier)
+      (number)))
+  (variable_declaration
+    (identifier)
+    (subscript_expression
+      (identifier)
+      (number))))
+
+==============================================
 For loop in array
 ==============================================
 

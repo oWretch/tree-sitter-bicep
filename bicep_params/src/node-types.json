@@ -1305,6 +1305,10 @@
     "named": false
   },
   {
+    "type": "^",
+    "named": false
+  },
+  {
     "type": "array",
     "named": false
   },
