@@ -22,10 +22,16 @@
   name: (identifier) @module)
 
 (extension_statement
+  name: (string) @string.special.path)
+
+(extension_statement
   alias: (identifier) @module)
 
 (extension_with_statement
   name: (identifier) @module)
+
+(extension_with_statement
+  name: (string) @string.special.path)
 
 (extension_with_statement
   alias: (identifier) @module)
@@ -168,6 +174,8 @@
   "output"
   "param"
   "resource"
+  "resourceInput"
+  "resourceOutput"
   "extension"
   "existing"
   "targetScope"
@@ -203,10 +211,14 @@
   "="
   "!"
   ".?"
+  "..."
 ] @operator
 
 (subscript_expression
   "?" @operator)
+
+(subscript_expression
+  "^" @operator)
 
 (nullable_type
   "?" @operator)

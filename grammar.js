@@ -119,13 +119,13 @@ module.exports = grammar({
 
     extension_statement: $ => seq(
       'extension',
-      field('name', $.identifier),
+      field('name', choice($.identifier, $.string)),
       optional(seq('as', field('alias', $.identifier))),
     ),
 
     extension_with_statement: $ => seq(
       'extension',
-      field('name', $.identifier),
+      field('name', choice($.identifier, $.string)),
       'with',
       field('properties', $.object),
       optional(seq('as', field('alias', $.identifier))),
@@ -234,6 +234,7 @@ module.exports = grammar({
     variable_declaration: $ => seq(
       'var',
       $.identifier,
+      optional($.type),
       '=',
       $.expression,
       optional('!'),
@@ -309,7 +310,7 @@ module.exports = grammar({
       '[',
       optionalCommaSep(seq(
         optional($.decorators),
-        $.expression,
+        choice($.spread_expression, $.expression),
       )),
       ']',
     ),
@@ -340,8 +341,11 @@ module.exports = grammar({
           $.union_type,
         ),
       ),
+      $.spread_expression,
       $.resource_declaration,
     ),
+
+    spread_expression: $ => seq('...', $.expression),
 
     if_statement: $ => seq('if', $.parenthesized_expression, $.object),
     same_line_if_statement: $ => seq(
@@ -395,6 +399,7 @@ module.exports = grammar({
       field('object', choice($.expression, $.primary_expression)),
       '[',
       optional('?'),
+      optional('^'),
       field('index', $.expression),
       ']',
     )),
@@ -476,11 +481,13 @@ module.exports = grammar({
 
     _multiline_string_literal: $ => seq(
       '\'\'\'',
-      alias($.multiline_string_content, $.string_content),
+      repeat(choice(
+        $.interpolation,
+        alias('$', $.string_content),
+        alias($._multiline_string_content, $.string_content),
+      )),
       '\'\'\'',
     ),
-
-    multiline_string_content: $ => repeat1($._multiline_string_content),
 
     _escape_sequence: $ =>
       choice(
@@ -509,6 +516,8 @@ module.exports = grammar({
         'output',
         'param',
         'resource',
+        'resourceInput',
+        'resourceOutput',
         'existing',
         'type',
         'var',
@@ -568,7 +577,7 @@ module.exports = grammar({
 
     parameterized_type: $ => prec(2, seq(
       optional(seq($.identifier, '.')),
-      'resource',
+      choice('resource', 'resourceInput', 'resourceOutput'),
       $.type_arguments,
     )),
 

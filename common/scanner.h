@@ -29,18 +29,10 @@ static unsigned scanner_serialize(Scanner *scanner, char *buffer) {
     return 1;
 }
 
-<<<<<<< HEAD:common/scanner.h
 static void scanner_deserialize(Scanner *scanner, const char *buffer, unsigned length) {
-    if (length == 1) {
-        scanner->quote_before_end_count = buffer[0];
-=======
-void tree_sitter_bicep_external_scanner_deserialize(void *payload, const char *buffer, unsigned length) {
-    Scanner *scanner = (Scanner *)payload;
     scanner->quote_before_end_count = 0;
-
     if (length == 1) {
         scanner->quote_before_end_count = (uint8_t)buffer[0];
->>>>>>> origin/patched-main:src/scanner.c
     }
 }
 
@@ -118,6 +110,18 @@ static bool scanner_scan(Scanner *scanner, TSLexer *lexer, const bool *valid_sym
                         return advanced_once;
                     }
                 }
+            }
+            if (lexer->lookahead == '$') {
+                lexer->mark_end(lexer);
+                advance(lexer);
+                if (lexer->lookahead == '{') {
+                    // ${ starts an interpolation, return content before it
+                    lexer->result_symbol = MULTILINE_STRING_CONTENT;
+                    return advanced_once;
+                }
+                // Standalone $, continue scanning content
+                advanced_once = true;
+                continue;
             }
             advance(lexer);
             advanced_once = true;
