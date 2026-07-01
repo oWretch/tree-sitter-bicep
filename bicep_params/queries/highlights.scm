@@ -6,40 +6,6 @@
   "from"
 ] @keyword.import
 
-; Import statements
-(import_statement
-  (string) @string.special.path)
-
-(import_with_statement
-  (string) @string.special.path)
-
-(import_functionality
-  "from"
-  (string) @string.special.path)
-
-; Extensions
-(extension_statement
-  name: (identifier) @module)
-
-(extension_statement
-  name: (string) @string.special.path)
-
-(extension_statement
-  alias: (identifier) @module)
-
-(extension_with_statement
-  name: (identifier) @module)
-
-(extension_with_statement
-  name: (string) @string.special.path)
-
-(extension_with_statement
-  alias: (identifier) @module)
-
-; Namespaces
-(module_declaration
-  (identifier) @module)
-
 ; Builtins
 (primitive_type) @type.builtin
 
@@ -50,9 +16,6 @@
 ; Functions
 (call_expression
   function: (identifier) @function.call)
-
-(user_defined_function
-  name: (identifier) @function)
 
 ; Properties
 (object_property
@@ -67,20 +30,6 @@
 
 (property_identifier) @property
 
-; Attributes
-(decorator
-  "@" @attribute)
-
-(decorator
-  (call_expression
-    (identifier) @attribute))
-
-(decorator
-  (call_expression
-    (member_expression
-      object: (identifier) @attribute
-      property: (property_identifier) @attribute)))
-
 ; Types
 (type_declaration
   (identifier) @type)
@@ -91,9 +40,6 @@
   (identifier) @type)
 
 (type
-  (identifier) @type)
-
-(resource_declaration
   (identifier) @type)
 
 (resource_expression
@@ -115,20 +61,8 @@
     (member_expression
       object: (identifier) @variable.parameter)))
 
-(parameter
-  .
-  (identifier) @variable.parameter)
-
 ; Variables
 (variable_declaration
-  (identifier) @variable
-  (_))
-
-(metadata_declaration
-  (identifier) @variable
-  (_))
-
-(output_declaration
   (identifier) @variable
   (_))
 
@@ -158,25 +92,13 @@
 
 ; Keywords
 [
-  "module"
-  "metadata"
-  "output"
+  "extends"
+  "none"
   "param"
-  "resource"
-  "resourceInput"
-  "resourceOutput"
-  "extension"
-  "existing"
-  "targetScope"
   "type"
   "var"
   "using"
-  "test"
 ] @keyword
-
-"func" @keyword.function
-
-"assert" @keyword.exception
 
 ; Operators
 [
@@ -205,9 +127,6 @@
 
 (subscript_expression
   "?" @operator)
-
-(subscript_expression
-  "^" @operator)
 
 (nullable_type
   "?" @operator)

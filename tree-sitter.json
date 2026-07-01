@@ -4,24 +4,45 @@
       "name": "bicep",
       "camelcase": "Bicep",
       "scope": "source.bicep",
+      "path": "bicep",
+      "external-files": [
+        "common/scanner.h"
+      ],
       "file-types": [
         "bicep"
       ],
       "injection-regex": "^bicep$"
+    },
+    {
+      "name": "bicep_params",
+      "camelcase": "BicepParams",
+      "scope": "source.bicep.params",
+      "path": "bicep_params",
+      "external-files": [
+        "common/scanner.h"
+      ],
+      "file-types": [
+        "bicepparam"
+      ],
+      "injection-regex": "^bicep_params$"
     }
   ],
   "metadata": {
     "version": "1.1.0",
     "license": "MIT",
-    "description": "Bicep grammar for tree-sitter",
+    "description": "Bicep and Bicep parameter grammars for tree-sitter",
     "authors": [
       {
         "name": "Amaan Qureshi",
         "email": "amaanq12@gmail.com"
+      },
+      {
+        "name": "Jerome Brown",
+        "email": "Jerome@SoliDeoGloria.tech"
       }
     ],
     "links": {
-      "repository": "https://github.com/tree-sitter-grammars/tree-sitter-bicep"
+      "repository": "https://github.com/oWretch/tree-sitter-bicep"
     }
   },
   "bindings": {

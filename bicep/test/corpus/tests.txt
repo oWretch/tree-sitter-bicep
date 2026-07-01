@@ -28,6 +28,43 @@ import { foo as bar } from './bar.bicep'
       (string_content))))
 
 ==============================================
+Multiline import statement
+==============================================
+
+import {
+  clientProfileType, defenderPlanConfigType
+  lzVendingWorkloadArchetypeType
+} from '../../../../types.bicep'
+
+---
+
+(infrastructure
+  (import_functionality
+    (identifier)
+    (identifier)
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
+Multiline import statement without commas
+==============================================
+
+import {
+  clientProfileType
+  lzVendingWorkloadArchetypeType
+} from '../../../../types.bicep'
+
+---
+
+(infrastructure
+  (import_functionality
+    (identifier)
+    (identifier)
+    (string
+      (string_content))))
+
+==============================================
 Simple wildcard import statement
 ==============================================
 
@@ -1710,3 +1747,34 @@ var result = '''value: ${a + b}'''
         (binary_expression
           left: (identifier)
           right: (identifier))))))
+
+==============================================
+Invalid newline between = and if for resource
+:error
+==============================================
+
+param deployZone bool = true
+
+resource dnsZone 'Microsoft.Network/dnsZones@2023-07-01-preview' =
+  if (deployZone) {
+    name: 'myZone'
+    location: 'global'
+  }
+
+---
+
+==============================================
+Invalid newline between = and if for module
+:error
+==============================================
+
+param deployModule bool = true
+
+module webModule './webApp.bicep' =
+  if (deployModule) {
+    name: 'webDeploy'
+    params: {}
+  }
+
+---
+

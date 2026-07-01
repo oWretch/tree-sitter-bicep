@@ -3,14 +3,21 @@
 typedef struct TSLanguage TSLanguage;
 
 TSLanguage *tree_sitter_bicep(void);
+TSLanguage *tree_sitter_bicep_params(void);
 
-static PyObject* _binding_language(PyObject *Py_UNUSED(self), PyObject *Py_UNUSED(args)) {
+static PyObject* _binding_language_bicep(PyObject *Py_UNUSED(self), PyObject *Py_UNUSED(args)) {
     return PyCapsule_New(tree_sitter_bicep(), "tree_sitter.Language", NULL);
 }
 
+static PyObject* _binding_language_bicep_params(PyObject *Py_UNUSED(self), PyObject *Py_UNUSED(args)) {
+    return PyCapsule_New(tree_sitter_bicep_params(), "tree_sitter.Language", NULL);
+}
+
 static PyMethodDef methods[] = {
-    {"language", _binding_language, METH_NOARGS,
-     "Get the tree-sitter language for this grammar."},
+    {"language_bicep", _binding_language_bicep, METH_NOARGS,
+     "Get the tree-sitter language for Bicep."},
+    {"language_bicep_params", _binding_language_bicep_params, METH_NOARGS,
+     "Get the tree-sitter language for Bicep Params."},
     {NULL, NULL, 0, NULL}
 };
 

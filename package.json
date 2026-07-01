@@ -1,29 +1,40 @@
 {
   "name": "tree-sitter-bicep",
   "version": "1.1.0",
-  "description": "Bicep grammar for tree-sitter",
-  "repository": "https://github.com/tree-sitter-grammars/tree-sitter-bicep",
+  "description": "Bicep and Bicep parameter grammars for tree-sitter",
+  "repository": "https://github.com/oWretch/tree-sitter-bicep",
   "license": "MIT",
   "author": {
     "name": "Amaan Qureshi",
     "email": "amaanq12@gmail.com"
   },
+  "maintainers": [
+    {
+      "name": "Jerome Brown",
+      "email": "Jerome@SoliDeoGloria.tech"
+    }
+  ],
   "main": "bindings/node",
   "types": "bindings/node",
   "keywords": [
     "incremental",
     "parsing",
     "tree-sitter",
-    "bicep"
+    "bicep",
+    "bicepparam"
   ],
   "files": [
-    "grammar.js",
-    "tree-sitter.json",
     "binding.gyp",
     "prebuilds/**",
     "bindings/node/*",
-    "queries/*",
-    "src/**",
+    "bicep/grammar.js",
+    "bicep/queries/*",
+    "bicep_params/grammar.js",
+    "bicep_params/queries/*",
+    "tree-sitter.json",
+    "bicep/src/**",
+    "bicep_params/src/**",
+    "common/**",
     "*.wasm"
   ],
   "dependencies": {
@@ -47,6 +58,7 @@
   "scripts": {
     "install": "node-gyp-build",
     "lint": "eslint grammar.js",
+    "test:grammar": "tree-sitter test",
     "prestart": "tree-sitter build --wasm",
     "start": "tree-sitter playground",
     "test": "node --test bindings/node/*_test.js"

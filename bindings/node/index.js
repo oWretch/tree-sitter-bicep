@@ -7,5 +7,6 @@ module.exports =
     : require("node-gyp-build")(root);
 
 try {
-  module.exports.nodeTypeInfo = require("../../src/node-types.json");
+  module.exports.bicep.nodeTypeInfo = require("../../bicep/src/node-types.json");
+  module.exports.bicep_params.nodeTypeInfo = require("../../bicep_params/src/node-types.json");
 } catch (_) {}

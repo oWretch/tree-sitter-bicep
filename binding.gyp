@@ -6,12 +6,14 @@
         "<!(node -p \"require('node-addon-api').targets\"):node_addon_api_except",
       ],
       "include_dirs": [
-        "src",
+        "bicep/src",
       ],
       "sources": [
+        "bicep/src/parser.c",
+        "bicep/src/scanner.c",
+        "bicep_params/src/parser.c",
+        "bicep_params/src/scanner.c",
         "bindings/node/binding.cc",
-        "src/parser.c",
-        "src/scanner.c",
       ],
       "conditions": [
         ["OS!='win'", {
