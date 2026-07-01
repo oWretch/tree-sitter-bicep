@@ -53,6 +53,7 @@ module.exports = grammar({
 
   externals: $ => [
     $._external_asterisk,
+    $._import_line_break,
     $._multiline_string_content,
   ],
 
@@ -86,6 +87,8 @@ module.exports = grammar({
       $.decorators,
       $.directive_statement,
       $.declaration,
+      $.extension_statement,
+      $.extension_with_statement,
       $.import_statement,
       $.import_with_statement,
       $.import_functionality,
@@ -114,14 +117,28 @@ module.exports = grammar({
       choice(alias($.same_line_if_statement, $.if_statement), $.object, $.for_statement),
     ),
 
+    extension_statement: $ => seq(
+      'extension',
+      field('name', $.identifier),
+      optional(seq('as', field('alias', $.identifier))),
+    ),
+
+    extension_with_statement: $ => seq(
+      'extension',
+      field('name', $.identifier),
+      'with',
+      field('properties', $.object),
+      optional(seq('as', field('alias', $.identifier))),
+    ),
+
     import_statement: $ => seq(
-      choice('import', 'provider'),
+      'import',
       $.string,
       optional(seq('as', $.identifier)),
     ),
 
     import_with_statement: $ => seq(
-      choice('import', 'provider'),
+      'import',
       $.string,
       'with',
       $.expression,
@@ -131,7 +148,12 @@ module.exports = grammar({
     import_functionality: $ => seq(
       'import',
       choice(
-        seq('{', commaSep1(choice(seq($.identifier, 'as', $.identifier), $.identifier)), '}'),
+        seq(
+          '{',
+          commaSep1(choice(seq($.identifier, 'as', $.identifier), $.identifier)),
+          repeat(seq($._import_line_break, commaSep1(choice(seq($.identifier, 'as', $.identifier), $.identifier)))),
+          '}',
+        ),
         seq('*', 'as', $.identifier),
       ),
       'from',
@@ -482,7 +504,7 @@ module.exports = grammar({
       choice(
         'module',
         'import',
-        'provider',
+        'extension',
         'metadata',
         'output',
         'param',
