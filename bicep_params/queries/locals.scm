@@ -28,6 +28,17 @@
 ; Definitions
 (type) @local.definition.associated
 
+(import_statement
+  "as"
+  (identifier) @local.definition.namespace)
+
+(import_with_statement
+  "as"
+  (identifier) @local.definition.namespace)
+
+(import_functionality
+  (identifier) @local.definition.namespace)
+
 (object_property
   (identifier) @local.definition.field
   (_))

@@ -6,6 +6,23 @@
   "from"
 ] @keyword.import
 
+; Import statements
+(import_statement
+  (string) @string.special.path)
+
+(import_with_statement
+  (string) @string.special.path)
+
+(import_functionality
+  "from"
+  (string) @string.special.path)
+
+(using_statement
+  (string) @string.special.path)
+
+(extends_statement
+  (string) @string.special.path)
+
 ; Builtins
 (primitive_type) @type.builtin
 
@@ -127,6 +144,9 @@
 
 (subscript_expression
   "?" @operator)
+
+(subscript_expression
+  "^" @operator)
 
 (nullable_type
   "?" @operator)
