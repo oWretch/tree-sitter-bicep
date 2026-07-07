@@ -68,6 +68,7 @@ module.exports = function defineGrammar(dialect) {
 
     externals: $ => [
       $._external_asterisk,
+      $._import_line_break,
       $._multiline_string_content,
     ],
 
@@ -237,7 +238,12 @@ module.exports = function defineGrammar(dialect) {
       import_functionality: $ => seq(
         'import',
         choice(
-          seq('{', commaSep1(choice(seq($.identifier, 'as', $.identifier), $.identifier)), '}'),
+          seq(
+            '{',
+            commaSep1(choice(seq($.identifier, 'as', $.identifier), $.identifier)),
+            repeat(seq($._import_line_break, commaSep1(choice(seq($.identifier, 'as', $.identifier), $.identifier)))),
+            '}',
+          ),
           seq('*', 'as', $.identifier),
         ),
         'from',
@@ -300,6 +306,7 @@ module.exports = function defineGrammar(dialect) {
       primary_expression: $ => prec(2, choice(
         $.subscript_expression,
         $.member_expression,
+        $.null_assertion_expression,
         $.resource_expression,
         $.identifier,
         $.keyword_identifier,
@@ -442,11 +449,21 @@ module.exports = function defineGrammar(dialect) {
         ')',
       ),
 
-      member_expression: $ => prec(PREC.SUBSCRIPT, seq(
+      member_expression: $ => prec.left(PREC.SUBSCRIPT, seq(
         field('object', choice($.expression, $.primary_expression, $.parameterized_type)),
         optional('!'),
         choice('.', '.?'),
         field('property', alias($.identifier, $.property_identifier)),
+      )),
+
+      null_assertion_expression: $ => prec(PREC.CALL, seq(
+        choice(
+          $.subscript_expression,
+          $.member_expression,
+          $.identifier,
+          $.parenthesized_expression,
+        ),
+        alias('!', $.nullable_return_type),
       )),
 
       subscript_expression: $ => prec.right(PREC.SUBSCRIPT, seq(
@@ -610,15 +627,18 @@ module.exports = function defineGrammar(dialect) {
 
       primitive_type: _ => choice(...primitive_types),
       array_type: $ => seq($.type, '[', ']'),
-      nullable_type: $ => seq(
+      nullable_type: $ => prec(3, seq(
         choice(
-          $.expression,
+          $.identifier,
           $.primitive_type,
           $.array_type,
+          $.object,
+          $.member_expression,
+          $.parameterized_type,
           $.parenthesized_type,
         ),
-        choice('!', prec(-1, '?')),
-      ),
+        choice('!', '?'),
+      )),
 
       negated_type: $ => prec.right(seq('!', $.type)),
 
@@ -640,7 +660,7 @@ module.exports = function defineGrammar(dialect) {
 
       parameterized_type: $ => prec(2, seq(
         optional(seq($.identifier, '.')),
-        'resource',
+        choice('resource', 'resourceInput', 'resourceOutput'),
         $.type_arguments,
       )),
 
