@@ -1463,6 +1463,28 @@ var x = obj!.property
       property: (property_identifier))))
 
 ==============================================
+Non-null assertion after optional member access
+==============================================
+
+var x = split(foo.?bar!, '/')
+
+---
+
+(infrastructure
+  (variable_declaration
+    (identifier)
+    (call_expression
+      function: (identifier)
+      arguments: (arguments
+        (null_assertion_expression
+          (member_expression
+            object: (identifier)
+            property: (property_identifier))
+          (nullable_return_type))
+        (string
+          (string_content))))))
+
+==============================================
 Negated type in parameter
 ==============================================
 
@@ -1777,4 +1799,3 @@ module webModule './webApp.bicep' =
   }
 
 ---
-
