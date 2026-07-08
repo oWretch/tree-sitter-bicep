@@ -30,16 +30,10 @@
   name: (identifier) @module)
 
 (extension_statement
-  name: (string) @string.special.path)
-
-(extension_statement
   alias: (identifier) @module)
 
 (extension_with_statement
   name: (identifier) @module)
-
-(extension_with_statement
-  name: (string) @string.special.path)
 
 (extension_with_statement
   alias: (identifier) @module)
