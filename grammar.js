@@ -59,6 +59,7 @@ module.exports = grammar({
 
   extras: $ => [
     $.comment,
+    $.diagnostic_comment,
     /\s/,
   ],
 
@@ -85,7 +86,6 @@ module.exports = grammar({
 
     statement: $ => choice(
       $.decorators,
-      $.directive_statement,
       $.declaration,
       $.extension_statement,
       $.extension_with_statement,
@@ -163,29 +163,6 @@ module.exports = grammar({
     using_statement: $ => seq('using', $.string),
 
     target_scope_assignment: $ => seq('targetScope', '=', $.string),
-
-    directive_statement: $ => choice(
-      $.disable_next_line_directive,
-      $.disable_diagnostics_directive,
-      $.restore_diagnostics_directive,
-    ),
-
-    disable_next_line_directive: $ => seq(
-      '#disable-next-line',
-      repeat1(seq(/[ \t]+/, $.directive_identifier)),
-    ),
-
-    disable_diagnostics_directive: $ => seq(
-      '#disable-diagnostics',
-      repeat1(seq(/[ \t]+/, $.directive_identifier)),
-    ),
-
-    restore_diagnostics_directive: $ => seq(
-      '#restore-diagnostics',
-      repeat1(seq(/[ \t]+/, $.directive_identifier)),
-    ),
-
-    directive_identifier: _ => /[a-zA-Z][a-zA-Z0-9-]*/,
 
     metadata_declaration: $ => seq(
       'metadata',
@@ -596,6 +573,8 @@ module.exports = grammar({
         '/',
       ),
     )),
+
+    diagnostic_comment: _ => token(prec(-1, seq('#', /.*/))),
   },
 });
 
