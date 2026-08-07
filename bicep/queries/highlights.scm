@@ -273,5 +273,5 @@
 ; Comments
 [
   (comment)
-  (diagnostic_comment)
+  (directive_statement)
 ] @comment @spell

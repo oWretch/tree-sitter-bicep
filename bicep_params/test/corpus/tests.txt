@@ -763,7 +763,7 @@ var fn = x => x + 1
         (number)))))
 
 ==============================================
-Diagnostic comment
+Directive statements and regions
 ==============================================
 
 #disable-next-line no-unused-vars
@@ -772,7 +772,10 @@ var a = 'test'
 ---
 
 (infrastructure
-  (diagnostic_comment)
+  (directive_statement
+    (disable_next_line_directive
+      (directive_identifier)
+      (directive_identifier)))
   (variable_declaration
     (identifier)
     (string

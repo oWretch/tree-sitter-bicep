@@ -74,7 +74,6 @@ module.exports = function defineGrammar(dialect) {
 
     extras: $ => [
       $.comment,
-      $.diagnostic_comment,
       /\s/,
     ],
 
@@ -100,6 +99,7 @@ module.exports = function defineGrammar(dialect) {
       infrastructure: $ => repeat($.statement),
 
       statement: $ => choice(
+        $.directive_statement,
         ...(isBicep ? [
           $.decorators,
           $.declaration,
@@ -120,6 +120,22 @@ module.exports = function defineGrammar(dialect) {
           $.extends_statement,
         ] : []),
       ),
+
+      directive_statement: $ => $.directive,
+
+      directive: $ => choice(
+        $.disable_next_line_directive,
+        $.disable_diagnostics_directive,
+        $.restore_diagnostics_directive,
+        $.unknown_directive,
+      ),
+
+      disable_next_line_directive: $ => seq('#disable-next-line', repeat1($.directive_identifier)),
+      disable_diagnostics_directive: $ => seq('#disable-diagnostics', repeat1($.directive_identifier)),
+      restore_diagnostics_directive: $ => seq('#restore-diagnostics', repeat1($.directive_identifier)),
+      unknown_directive: $ => seq('#', $.directive_identifier, repeat($.directive_identifier)),
+
+      directive_identifier: _ => token(/[^\s]+/),
 
       declaration: $ => choice(
         ...(isBicep ? [
@@ -672,14 +688,13 @@ module.exports = function defineGrammar(dialect) {
 
       // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
       comment: _ => token(choice(
-        seq('//', /(\\(.|\r?\n)|[^\\\n])*/),
+        seq('//', /(?!#)(\\(.|\r?\n)|[^\n])*/),
         seq(
           '/*',
           /[^*]*\*+([^/*][^*]*\*+)*/,
           '/',
         ),
       )),
-      diagnostic_comment: _ => token(prec(-1, seq('#', /.*/))),
     },
   });
 };
