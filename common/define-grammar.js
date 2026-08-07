@@ -127,12 +127,16 @@ module.exports = function defineGrammar(dialect) {
         $.disable_next_line_directive,
         $.disable_diagnostics_directive,
         $.restore_diagnostics_directive,
+        $.region_directive,
+        $.endregion_directive,
         $.unknown_directive,
       ),
 
       disable_next_line_directive: $ => seq('#disable-next-line', repeat1($.directive_identifier)),
       disable_diagnostics_directive: $ => seq('#disable-diagnostics', repeat1($.directive_identifier)),
       restore_diagnostics_directive: $ => seq('#restore-diagnostics', repeat1($.directive_identifier)),
+      region_directive: $ => seq(choice(seq('//', '#region'), '#region'), optional(repeat1($.directive_identifier))),
+      endregion_directive: $ => seq(choice(seq('//', '#endregion'), '#endregion'), optional(repeat1($.directive_identifier))),
       unknown_directive: $ => seq('#', $.directive_identifier, repeat($.directive_identifier)),
 
       directive_identifier: _ => token(/[^\s]+/),

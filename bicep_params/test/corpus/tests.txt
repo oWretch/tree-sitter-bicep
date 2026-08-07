@@ -767,7 +767,9 @@ Directive statements and regions
 ==============================================
 
 #disable-next-line no-unused-vars
+//#region westus2
 var a = 'test'
+//#endregion westus2
 
 ---
 
@@ -776,10 +778,16 @@ var a = 'test'
     (disable_next_line_directive
       (directive_identifier)
       (directive_identifier)))
+  (directive_statement
+    (region_directive
+      (directive_identifier)))
   (variable_declaration
     (identifier)
     (string
-      (string_content))))
+      (string_content)))
+  (directive_statement
+    (endregion_directive
+      (directive_identifier))))
 
 ==============================================
 Object with string key
