@@ -1383,7 +1383,7 @@ output res resource<'Microsoft.Storage/storageAccounts@2021-02-01'> = stg
     (identifier)))
 
 ==============================================
-Diagnostic comment
+Directive statement
 ==============================================
 
 #disable-next-line no-unused-params
@@ -1392,7 +1392,10 @@ param unused string
 ---
 
 (infrastructure
-  (diagnostic_comment)
+  (directive_statement
+    (disable_next_line_directive
+      (directive_argument)
+      (directive_argument)))
   (parameter_declaration
     (identifier)
     (type

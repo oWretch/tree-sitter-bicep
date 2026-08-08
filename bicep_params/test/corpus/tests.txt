@@ -763,20 +763,30 @@ var fn = x => x + 1
         (number)))))
 
 ==============================================
-Diagnostic comment
+Directive statements and regions
 ==============================================
 
 #disable-next-line no-unused-vars
+//#region
 var a = 'test'
+//#endregion
+//#not-a-region this is a regular comment
 
 ---
 
 (infrastructure
-  (diagnostic_comment)
-  (variable_declaration
-    (identifier)
-    (string
-      (string_content))))
+  (directive_statement
+    (disable_next_line_directive
+      (directive_argument)
+      (directive_argument)))
+  (region_block
+    (region_directive)
+    (variable_declaration
+      (identifier)
+      (string
+        (string_content)))
+    (endregion_directive))
+  (comment))
 
 ==============================================
 Object with string key

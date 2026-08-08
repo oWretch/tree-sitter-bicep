@@ -281,7 +281,10 @@ Directive statements
 ==============================================
 
 #disable-next-line no-unused-vars BCP138
+//#region
 var foo = 'aaa'
+//#endregion
+//#not-a-region this is a regular comment
 #disable-diagnostics no-unused-params BCP335
 #restore-diagnostics no-unused-params BCP335
 
@@ -290,20 +293,24 @@ var foo = 'aaa'
 (infrastructure
   (directive_statement
     (disable_next_line_directive
-      (directive_identifier)
-      (directive_identifier)))
-  (variable_declaration
-    (identifier)
-    (string
-      (string_content)))
+      (directive_argument)
+      (directive_argument)))
+  (region_block
+    (region_directive)
+    (variable_declaration
+      (identifier)
+      (string
+        (string_content)))
+    (endregion_directive))
+  (comment)
   (directive_statement
     (disable_diagnostics_directive
-      (directive_identifier)
-      (directive_identifier)))
+      (directive_argument)
+      (directive_argument)))
   (directive_statement
     (restore_diagnostics_directive
-      (directive_identifier)
-      (directive_identifier))))
+      (directive_argument)
+      (directive_argument))))
 
 ==============================================
 Invalid directive with no identifiers
