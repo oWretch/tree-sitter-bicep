@@ -281,9 +281,10 @@ Directive statements
 ==============================================
 
 #disable-next-line no-unused-vars BCP138
-//#region westus2
+//#region
 var foo = 'aaa'
-//#endregion westus2
+//#endregion
+//#not-a-region this is a regular comment
 #disable-diagnostics no-unused-params BCP335
 #restore-diagnostics no-unused-params BCP335
 
@@ -294,16 +295,14 @@ var foo = 'aaa'
     (disable_next_line_directive
       (directive_argument)
       (directive_argument)))
-  (directive_statement
-    (region_directive
-      (directive_argument)))
-  (variable_declaration
-    (identifier)
-    (string
-      (string_content)))
-  (directive_statement
-    (endregion_directive
-      (directive_argument)))
+  (region_block
+    (region_directive)
+    (variable_declaration
+      (identifier)
+      (string
+        (string_content)))
+    (endregion_directive))
+  (comment)
   (directive_statement
     (disable_diagnostics_directive
       (directive_argument)

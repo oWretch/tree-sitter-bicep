@@ -19,5 +19,5 @@
   (ternary_expression)
   (string)
   (comment)
-  (directive_statement)
+  (region_block)
 ] @fold

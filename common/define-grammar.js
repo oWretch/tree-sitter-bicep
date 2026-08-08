@@ -99,6 +99,7 @@ module.exports = function defineGrammar(dialect) {
       infrastructure: $ => repeat($.statement),
 
       statement: $ => choice(
+        $.region_block,
         $.directive_statement,
         ...(isBicep ? [
           $.decorators,
@@ -127,16 +128,20 @@ module.exports = function defineGrammar(dialect) {
         $.disable_next_line_directive,
         $.disable_diagnostics_directive,
         $.restore_diagnostics_directive,
-        $.region_directive,
-        $.endregion_directive,
         $.unknown_directive,
+      ),
+
+      region_block: $ => seq(
+        $.region_directive,
+        repeat($.statement),
+        $.endregion_directive,
       ),
 
       disable_next_line_directive: $ => seq('#disable-next-line', repeat1($.directive_argument)),
       disable_diagnostics_directive: $ => seq('#disable-diagnostics', repeat1($.directive_argument)),
       restore_diagnostics_directive: $ => seq('#restore-diagnostics', repeat1($.directive_argument)),
-      region_directive: $ => seq(choice(seq('//', '#region'), '#region'), optional(repeat1($.directive_argument))),
-      endregion_directive: $ => seq(choice(seq('//', '#endregion'), '#endregion'), optional(repeat1($.directive_argument))),
+      region_directive: $ => seq(token(prec(1, '//#region')), optional(repeat1($.directive_argument))),
+      endregion_directive: $ => seq(token(prec(1, '//#endregion')), optional(repeat1($.directive_argument))),
       unknown_directive: $ => seq('#', $.directive_argument, repeat($.directive_argument)),
 
       directive_argument: _ => token(/[^\s]+/),
@@ -692,7 +697,7 @@ module.exports = function defineGrammar(dialect) {
 
       // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
       comment: _ => token(choice(
-        seq('//', /(?!#)(\\(.|\r?\n)|[^\n])*/),
+        seq('//', /(\\(.|\r?\n)|[^\n])*/),
         seq(
           '/*',
           /[^*]*\*+([^/*][^*]*\*+)*/,
