@@ -292,26 +292,26 @@ var foo = 'aaa'
 (infrastructure
   (directive_statement
     (disable_next_line_directive
-      (directive_identifier)
-      (directive_identifier)))
+      (directive_argument)
+      (directive_argument)))
   (directive_statement
     (region_directive
-      (directive_identifier)))
+      (directive_argument)))
   (variable_declaration
     (identifier)
     (string
       (string_content)))
   (directive_statement
     (endregion_directive
-      (directive_identifier)))
+      (directive_argument)))
   (directive_statement
     (disable_diagnostics_directive
-      (directive_identifier)
-      (directive_identifier)))
+      (directive_argument)
+      (directive_argument)))
   (directive_statement
     (restore_diagnostics_directive
-      (directive_identifier)
-      (directive_identifier))))
+      (directive_argument)
+      (directive_argument))))
 
 ==============================================
 Invalid directive with no identifiers

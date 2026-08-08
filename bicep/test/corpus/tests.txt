@@ -1394,8 +1394,8 @@ param unused string
 (infrastructure
   (directive_statement
     (disable_next_line_directive
-      (directive_identifier)
-      (directive_identifier)))
+      (directive_argument)
+      (directive_argument)))
   (parameter_declaration
     (identifier)
     (type
