@@ -15,14 +15,6 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "region_block"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "directive_statement"
-        },
-        {
-          "type": "SYMBOL",
           "name": "decorators"
         },
         {
@@ -58,188 +50,6 @@
           "name": "target_scope_assignment"
         }
       ]
-    },
-    "directive_statement": {
-      "type": "SYMBOL",
-      "name": "directive"
-    },
-    "directive": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "disable_next_line_directive"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "disable_diagnostics_directive"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "restore_diagnostics_directive"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "unknown_directive"
-        }
-      ]
-    },
-    "region_block": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "region_directive"
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "statement"
-          }
-        },
-        {
-          "type": "SYMBOL",
-          "name": "endregion_directive"
-        }
-      ]
-    },
-    "disable_next_line_directive": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "#disable-next-line"
-        },
-        {
-          "type": "REPEAT1",
-          "content": {
-            "type": "SYMBOL",
-            "name": "directive_argument"
-          }
-        }
-      ]
-    },
-    "disable_diagnostics_directive": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "#disable-diagnostics"
-        },
-        {
-          "type": "REPEAT1",
-          "content": {
-            "type": "SYMBOL",
-            "name": "directive_argument"
-          }
-        }
-      ]
-    },
-    "restore_diagnostics_directive": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "#restore-diagnostics"
-        },
-        {
-          "type": "REPEAT1",
-          "content": {
-            "type": "SYMBOL",
-            "name": "directive_argument"
-          }
-        }
-      ]
-    },
-    "region_directive": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "TOKEN",
-          "content": {
-            "type": "PREC",
-            "value": 1,
-            "content": {
-              "type": "STRING",
-              "value": "//#region"
-            }
-          }
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "REPEAT1",
-              "content": {
-                "type": "SYMBOL",
-                "name": "directive_argument"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        }
-      ]
-    },
-    "endregion_directive": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "TOKEN",
-          "content": {
-            "type": "PREC",
-            "value": 1,
-            "content": {
-              "type": "STRING",
-              "value": "//#endregion"
-            }
-          }
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "REPEAT1",
-              "content": {
-                "type": "SYMBOL",
-                "name": "directive_argument"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        }
-      ]
-    },
-    "unknown_directive": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "#"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "directive_argument"
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "directive_argument"
-          }
-        }
-      ]
-    },
-    "directive_argument": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PATTERN",
-        "value": "[^\\s]+"
-      }
     },
     "declaration": {
       "type": "CHOICE",
@@ -3402,7 +3212,7 @@
               },
               {
                 "type": "PATTERN",
-                "value": "(\\\\(.|\\r?\\n)|[^\\n])*"
+                "value": "(\\\\(.|\\r?\\n)|[^\\\\\\n])*"
               }
             ]
           },
@@ -3425,12 +3235,36 @@
           }
         ]
       }
+    },
+    "diagnostic_comment": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": -1,
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "#"
+            },
+            {
+              "type": "PATTERN",
+              "value": ".*"
+            }
+          ]
+        }
+      }
     }
   },
   "extras": [
     {
       "type": "SYMBOL",
       "name": "comment"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "diagnostic_comment"
     },
     {
       "type": "PATTERN",
