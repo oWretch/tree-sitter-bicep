@@ -203,15 +203,13 @@
   (identifier) @variable)
 
 ; Comments
-[
-  (comment)
-] @comment @spell
+(comment) @comment @spell
 
 ; Directives
 [
-  "#disable-next-line"
-  "#disable-diagnostics"
-  "#restore-diagnostics"
+  disable_next_line_directive
+  disable_diagnostics_directive
+  restore_diagnostics_directive
 ] @keyword.directive
 
 (unknown_directive
@@ -232,4 +230,4 @@
 [
   (region_directive)
   (endregion_directive)
-] @comment @spell
+] @keyword.directive
