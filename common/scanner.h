@@ -89,6 +89,9 @@ static bool scanner_scan(Scanner *scanner, TSLexer *lexer, const bool *valid_sym
         while (lexer->lookahead == ' ' || lexer->lookahead == '\t') {
             skip(lexer);
         }
+        if (lexer->lookahead == '\r' || lexer->lookahead == '\n' || lexer->eof(lexer)) {
+            return false;
+        }
         if (lexer->lookahead == 'i') {
             advance(lexer);
             if (lexer->lookahead == 'f') {

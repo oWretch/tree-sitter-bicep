@@ -276,7 +276,14 @@
 ] @comment @spell
 
 ; Directives
-(directive_statement) @keyword.directive
+[
+  "#disable-next-line"
+  "#disable-diagnostics"
+  "#restore-diagnostics"
+] @keyword.directive
+
+(unknown_directive
+  "#" @keyword.directive)
 
 (disable_next_line_directive
   (directive_argument) @variable.parameter)
