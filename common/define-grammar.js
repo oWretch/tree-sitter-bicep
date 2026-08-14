@@ -362,13 +362,13 @@ module.exports = function defineGrammar(dialect) {
         decorators: $ => prec.right(repeat1($.decorator)),
       } : {}),
 
-      // Arrays and objects differ: bicep has decorators, bicep_params has spread
+      // Arrays and objects differ: bicep has decorators, bicep_params does not
       array: $ => isBicep ?
         seq(
           '[',
           optionalCommaSep(seq(
             optional($.decorators),
-            $.expression,
+            choice($.spread_expression, $.expression),
           )),
           ']',
         ) :
@@ -393,10 +393,8 @@ module.exports = function defineGrammar(dialect) {
           '}',
         ),
 
-      // Spread expression only in bicep_params
-      ...(isBicepParams ? {
-        spread_expression: $ => seq('...', $.expression),
-      } : {}),
+      // Spread expression in both bicep and bicep_params
+      spread_expression: $ => seq('...', $.expression),
 
       object_property: $ => isBicep ?
         choice(
@@ -418,6 +416,7 @@ module.exports = function defineGrammar(dialect) {
               $.union_type,
             ),
           ),
+          $.spread_expression,
           $.resource_declaration,
         ) :
         seq(
