@@ -777,7 +777,6 @@ var a = 'test'
 (infrastructure
   (directive_statement
     (disable_next_line_directive
-      (directive_argument)
       (directive_argument)))
   (region_block
     (region_directive)

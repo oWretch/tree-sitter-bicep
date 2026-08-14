@@ -150,6 +150,10 @@
         "named": true
       },
       {
+        "type": "directive_statement",
+        "named": true
+      },
+      {
         "type": "extension_statement",
         "named": true
       },
@@ -167,6 +171,10 @@
       },
       {
         "type": "import_with_statement",
+        "named": true
+      },
+      {
+        "type": "region_block",
         "named": true
       },
       {
@@ -477,6 +485,78 @@
       "types": [
         {
           "type": "decorator",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "directive_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "disable_diagnostics_directive",
+          "named": true
+        },
+        {
+          "type": "disable_next_line_directive",
+          "named": true
+        },
+        {
+          "type": "restore_diagnostics_directive",
+          "named": true
+        },
+        {
+          "type": "unknown_directive",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "disable_diagnostics_directive",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "directive_argument",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "disable_next_line_directive",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "directive_argument",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "endregion_directive",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "directive_argument",
           "named": true
         }
       ]
@@ -1103,6 +1183,44 @@
     "fields": {}
   },
   {
+    "type": "region_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "endregion_directive",
+          "named": true
+        },
+        {
+          "type": "region_directive",
+          "named": true
+        },
+        {
+          "type": "statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "region_directive",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "directive_argument",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "resource_declaration",
     "named": true,
     "fields": {},
@@ -1157,6 +1275,21 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "restore_diagnostics_directive",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "directive_argument",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -1502,6 +1635,21 @@
     }
   },
   {
+    "type": "unknown_directive",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "directive_argument",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "user_defined_function",
     "named": true,
     "fields": {
@@ -1588,6 +1736,22 @@
     "named": false
   },
   {
+    "type": "#",
+    "named": false
+  },
+  {
+    "type": "#disable-diagnostics",
+    "named": false
+  },
+  {
+    "type": "#disable-next-line",
+    "named": false
+  },
+  {
+    "type": "#restore-diagnostics",
+    "named": false
+  },
+  {
     "type": "${",
     "named": false
   },
@@ -1641,6 +1805,14 @@
   },
   {
     "type": "/",
+    "named": false
+  },
+  {
+    "type": "//#endregion",
+    "named": false
+  },
+  {
+    "type": "//#region",
     "named": false
   },
   {
@@ -1728,7 +1900,7 @@
     "named": true
   },
   {
-    "type": "diagnostic_comment",
+    "type": "directive_argument",
     "named": true
   },
   {

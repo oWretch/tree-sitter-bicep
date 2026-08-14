@@ -273,7 +273,24 @@
 ; Comments
 [
   (comment)
-  (directive_statement)
+] @comment @spell
+
+; Directives
+(directive_statement) @keyword.directive
+
+(disable_next_line_directive
+  (directive_argument) @variable.parameter)
+
+(disable_diagnostics_directive
+  (directive_argument) @variable.parameter)
+
+(restore_diagnostics_directive
+  (directive_argument) @variable.parameter)
+
+(unknown_directive
+  (directive_argument) @variable.parameter)
+
+[
   (region_directive)
   (endregion_directive)
 ] @comment @spell

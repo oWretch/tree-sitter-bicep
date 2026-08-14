@@ -48,10 +48,6 @@
       ]
     },
     "directive_statement": {
-      "type": "SYMBOL",
-      "name": "directive"
-    },
-    "directive": {
       "type": "CHOICE",
       "members": [
         {
@@ -102,8 +98,17 @@
         {
           "type": "REPEAT1",
           "content": {
-            "type": "SYMBOL",
-            "name": "directive_argument"
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_directive_space"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "directive_argument"
+              }
+            ]
           }
         }
       ]
@@ -118,8 +123,17 @@
         {
           "type": "REPEAT1",
           "content": {
-            "type": "SYMBOL",
-            "name": "directive_argument"
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_directive_space"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "directive_argument"
+              }
+            ]
           }
         }
       ]
@@ -134,8 +148,17 @@
         {
           "type": "REPEAT1",
           "content": {
-            "type": "SYMBOL",
-            "name": "directive_argument"
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_directive_space"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "directive_argument"
+              }
+            ]
           }
         }
       ]
@@ -160,8 +183,17 @@
             {
               "type": "REPEAT1",
               "content": {
-                "type": "SYMBOL",
-                "name": "directive_argument"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_directive_space"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "directive_argument"
+                  }
+                ]
               }
             },
             {
@@ -191,8 +223,17 @@
             {
               "type": "REPEAT1",
               "content": {
-                "type": "SYMBOL",
-                "name": "directive_argument"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_directive_space"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "directive_argument"
+                  }
+                ]
               }
             },
             {
@@ -216,17 +257,33 @@
         {
           "type": "REPEAT",
           "content": {
-            "type": "SYMBOL",
-            "name": "directive_argument"
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_directive_space"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "directive_argument"
+              }
+            ]
           }
         }
       ]
     },
-    "directive_argument": {
-      "type": "TOKEN",
+    "_directive_space": {
+      "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[^\\s]+"
+        "value": "[ \\t]+"
+      }
+    },
+    "directive_argument": {
+      "type": "IMMEDIATE_TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[^ \\t\\r\\n]+"
       }
     },
     "declaration": {
@@ -1214,6 +1271,23 @@
         {
           "type": "STRING",
           "value": "if"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "parenthesized_expression"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "object"
+        }
+      ]
+    },
+    "_same_line_if_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_same_line_if"
         },
         {
           "type": "SYMBOL",
@@ -3052,6 +3126,14 @@
     {
       "type": "SYMBOL",
       "name": "_multiline_string_content"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_same_line_if"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_error_sentinel"
     }
   ],
   "inline": [
