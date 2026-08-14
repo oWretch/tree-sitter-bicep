@@ -80,6 +80,10 @@
         "named": true
       },
       {
+        "type": "null_assertion_expression",
+        "named": true
+      },
+      {
         "type": "number",
         "named": true
       },
@@ -114,6 +118,10 @@
         "named": true
       },
       {
+        "type": "directive_statement",
+        "named": true
+      },
+      {
         "type": "extends_statement",
         "named": true
       },
@@ -127,6 +135,10 @@
       },
       {
         "type": "import_with_statement",
+        "named": true
+      },
+      {
+        "type": "region_block",
         "named": true
       },
       {
@@ -383,6 +395,93 @@
     }
   },
   {
+    "type": "directive",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "disable_diagnostics_directive",
+          "named": true
+        },
+        {
+          "type": "disable_next_line_directive",
+          "named": true
+        },
+        {
+          "type": "restore_diagnostics_directive",
+          "named": true
+        },
+        {
+          "type": "unknown_directive",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "directive_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "directive",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "disable_diagnostics_directive",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "directive_argument",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "disable_next_line_directive",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "directive_argument",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "endregion_directive",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "directive_argument",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "extends_statement",
     "named": true,
     "fields": {},
@@ -632,6 +731,37 @@
     }
   },
   {
+    "type": "null_assertion_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "member_expression",
+          "named": true
+        },
+        {
+          "type": "nullable_return_type",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "subscript_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "nullable_type",
     "named": true,
     "fields": {},
@@ -644,7 +774,19 @@
           "named": true
         },
         {
-          "type": "expression",
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "member_expression",
+          "named": true
+        },
+        {
+          "type": "object",
+          "named": true
+        },
+        {
+          "type": "parameterized_type",
           "named": true
         },
         {
@@ -798,6 +940,44 @@
     "fields": {}
   },
   {
+    "type": "region_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "endregion_directive",
+          "named": true
+        },
+        {
+          "type": "region_directive",
+          "named": true
+        },
+        {
+          "type": "statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "region_directive",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "directive_argument",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "resource_expression",
     "named": true,
     "fields": {
@@ -821,6 +1001,21 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "restore_diagnostics_directive",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "directive_argument",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -1143,6 +1338,21 @@
     }
   },
   {
+    "type": "unknown_directive",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "directive_argument",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "using_statement",
     "named": true,
     "fields": {},
@@ -1186,6 +1396,22 @@
   },
   {
     "type": "!~",
+    "named": false
+  },
+  {
+    "type": "#",
+    "named": false
+  },
+  {
+    "type": "#disable-diagnostics",
+    "named": false
+  },
+  {
+    "type": "#disable-next-line",
+    "named": false
+  },
+  {
+    "type": "#restore-diagnostics",
     "named": false
   },
   {
@@ -1246,6 +1472,14 @@
   },
   {
     "type": "/",
+    "named": false
+  },
+  {
+    "type": "//#endregion",
+    "named": false
+  },
+  {
+    "type": "//#region",
     "named": false
   },
   {
@@ -1325,7 +1559,7 @@
     "named": true
   },
   {
-    "type": "diagnostic_comment",
+    "type": "directive_argument",
     "named": true
   },
   {
@@ -1406,6 +1640,14 @@
   },
   {
     "type": "resource",
+    "named": false
+  },
+  {
+    "type": "resourceInput",
+    "named": false
+  },
+  {
+    "type": "resourceOutput",
     "named": false
   },
   {

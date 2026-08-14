@@ -206,4 +206,6 @@
 [
   (comment)
   (directive_statement)
+  (region_directive)
+  (endregion_directive)
 ] @comment @spell
