@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{github.ref}}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  release:
+    name: Create release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2.1.4
+        with:
+          app-id: ${{secrets.RELEASE_APP_ID}}
+          private-key: ${{secrets.RELEASE_APP_PRIVATE_KEY}}
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          token: ${{steps.app-token.outputs.token}}
+      - name: Checkout verified-commit action
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: .github/actions/create-verified-commits
+          ref: 5e6efa98aedeb8f9fd244d31a73088326ac619b9 # v1.1.0
+          repository: oWretch/create-verified-commits
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          cache: npm
+          node-version: '24'
+      - name: Install modules
+        run: npm ci --legacy-peer-deps
+      - name: Create release
+        env:
+          CREATE_VERIFIED_COMMITS_ACTION: ${{github.workspace}}/.github/actions/create-verified-commits
+          GH_TOKEN: ${{steps.app-token.outputs.token}}
+          GITHUB_TOKEN: ${{steps.app-token.outputs.token}}
+          RELEASE_APP_TOKEN: ${{steps.app-token.outputs.token}}
+        run: npm run release
+      - name: Attest release artifacts
+        if: hashFiles('tree-sitter-bicep.wasm', 'tree-sitter-bicep.tar.gz') != ''
+        uses: actions/attest-build-provenance@8beda2b7ed98355c0e97c0a63bec38ae472e66c4 # v4
+        with:
+          subject-path: |
+            tree-sitter-bicep.wasm
+            tree-sitter-bicep.tar.gz

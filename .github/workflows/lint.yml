@@ -7,6 +7,30 @@ on:
   workflow_dispatch:
 
 jobs:
+  conventional-commits:
+    name: Conventional Commits
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          cache: npm
+          node-version: '24'
+      - name: Install modules
+        run: npm ci --ignore-scripts --legacy-peer-deps
+      - name: Validate commit messages
+        run: >-
+          npx commitlint --from "${{github.event.pull_request.base.sha}}"
+          --to "${{github.event.pull_request.head.sha}}"
+      - name: Validate pull request title
+        env:
+          PR_TITLE: ${{github.event.pull_request.title}}
+        run: printf '%s\n' "$PR_TITLE" | npx commitlint
   lint:
     name: Lint
     runs-on: ubuntu-latest
