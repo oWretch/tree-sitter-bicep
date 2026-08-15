@@ -271,7 +271,31 @@
   (identifier) @variable)
 
 ; Comments
+(comment) @comment @spell
+
+; Directives
 [
-  (comment)
-  (directive_statement)
-] @comment @spell
+  disable_next_line_directive
+  disable_diagnostics_directive
+  restore_diagnostics_directive
+] @keyword.directive
+
+(unknown_directive
+  "#" @keyword.directive)
+
+(disable_next_line_directive
+  (directive_argument) @variable.parameter)
+
+(disable_diagnostics_directive
+  (directive_argument) @variable.parameter)
+
+(restore_diagnostics_directive
+  (directive_argument) @variable.parameter)
+
+(unknown_directive
+  (directive_argument) @variable.parameter)
+
+[
+  (region_directive)
+  (endregion_directive)
+] @keyword.directive

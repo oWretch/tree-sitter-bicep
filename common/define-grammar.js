@@ -70,6 +70,8 @@ module.exports = function defineGrammar(dialect) {
       $._external_asterisk,
       $._import_line_break,
       $._multiline_string_content,
+      $._same_line_if,
+      $._error_sentinel,
     ],
 
     extras: $ => [
@@ -122,9 +124,7 @@ module.exports = function defineGrammar(dialect) {
         ] : []),
       ),
 
-      directive_statement: $ => $.directive,
-
-      directive: $ => choice(
+      directive_statement: $ => choice(
         $.disable_next_line_directive,
         $.disable_diagnostics_directive,
         $.restore_diagnostics_directive,
@@ -137,14 +137,15 @@ module.exports = function defineGrammar(dialect) {
         $.endregion_directive,
       ),
 
-      disable_next_line_directive: $ => seq('#disable-next-line', repeat1($.directive_argument)),
-      disable_diagnostics_directive: $ => seq('#disable-diagnostics', repeat1($.directive_argument)),
-      restore_diagnostics_directive: $ => seq('#restore-diagnostics', repeat1($.directive_argument)),
-      region_directive: $ => seq(token(prec(1, '//#region')), optional(repeat1($.directive_argument))),
-      endregion_directive: $ => seq(token(prec(1, '//#endregion')), optional(repeat1($.directive_argument))),
-      unknown_directive: $ => seq('#', $.directive_argument, repeat($.directive_argument)),
+      disable_next_line_directive: $ => seq('#disable-next-line', repeat1(seq($._directive_space, $.directive_argument))),
+      disable_diagnostics_directive: $ => seq('#disable-diagnostics', repeat1(seq($._directive_space, $.directive_argument))),
+      restore_diagnostics_directive: $ => seq('#restore-diagnostics', repeat1(seq($._directive_space, $.directive_argument))),
+      region_directive: $ => seq(token(prec(1, '//#region')), optional(repeat1(seq($._directive_space, $.directive_argument)))),
+      endregion_directive: $ => seq(token(prec(1, '//#endregion')), optional(repeat1(seq($._directive_space, $.directive_argument)))),
+      unknown_directive: $ => seq('#', $.directive_argument, repeat(seq($._directive_space, $.directive_argument))),
 
-      directive_argument: _ => token(/[^\s]+/),
+      _directive_space: _ => token.immediate(/[ \t]+/),
+      directive_argument: _ => token.immediate(/[^ \t\r\n]+/),
 
       declaration: $ => choice(
         ...(isBicep ? [
@@ -173,7 +174,7 @@ module.exports = function defineGrammar(dialect) {
           $.identifier,
           $.string,
           '=',
-          choice($.if_statement, $.object, $.for_statement),
+          choice(alias($._same_line_if_statement, $.if_statement), $.object, $.for_statement),
         ),
 
         extension_statement: $ => seq(
@@ -213,7 +214,7 @@ module.exports = function defineGrammar(dialect) {
           $.string,
           optional('existing'),
           '=',
-          choice($.if_statement, $.object, $.for_statement),
+          choice(alias($._same_line_if_statement, $.if_statement), $.object, $.for_statement),
         ),
 
         user_defined_function: $ => seq(
@@ -361,13 +362,13 @@ module.exports = function defineGrammar(dialect) {
         decorators: $ => prec.right(repeat1($.decorator)),
       } : {}),
 
-      // Arrays and objects differ: bicep has decorators, bicep_params has spread
+      // Arrays and objects differ: bicep has decorators, bicep_params does not
       array: $ => isBicep ?
         seq(
           '[',
           optionalCommaSep(seq(
             optional($.decorators),
-            $.expression,
+            choice($.spread_expression, $.expression),
           )),
           ']',
         ) :
@@ -392,10 +393,8 @@ module.exports = function defineGrammar(dialect) {
           '}',
         ),
 
-      // Spread expression only in bicep_params
-      ...(isBicepParams ? {
-        spread_expression: $ => seq('...', $.expression),
-      } : {}),
+      // Spread expression in both bicep and bicep_params
+      spread_expression: $ => seq('...', $.expression),
 
       object_property: $ => isBicep ?
         choice(
@@ -417,6 +416,7 @@ module.exports = function defineGrammar(dialect) {
               $.union_type,
             ),
           ),
+          $.spread_expression,
           $.resource_declaration,
         ) :
         seq(
@@ -439,6 +439,8 @@ module.exports = function defineGrammar(dialect) {
         ),
 
       if_statement: $ => seq('if', $.parenthesized_expression, $.object),
+
+      _same_line_if_statement: $ => seq($._same_line_if, $.parenthesized_expression, $.object),
 
       _lhs_expression: $ => prec(-1, choice(
         $.member_expression,

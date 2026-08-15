@@ -10,6 +10,8 @@ typedef enum {
     EXTERNAL_ASTERISK,
     IMPORT_LINE_BREAK,
     MULTILINE_STRING_CONTENT,
+    SAME_LINE_IF,
+    ERROR_SENTINEL,
 } TokenType;
 
 typedef struct {
@@ -37,6 +39,10 @@ static void scanner_deserialize(Scanner *scanner, const char *buffer, unsigned l
 }
 
 static bool scanner_scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
+    if (valid_symbols[ERROR_SENTINEL]) {
+        return false;
+    }
+
     if (valid_symbols[EXTERNAL_ASTERISK]) {
         while (iswspace(lexer->lookahead)) {
             skip(lexer);
@@ -77,6 +83,27 @@ static bool scanner_scan(Scanner *scanner, TSLexer *lexer, const bool *valid_sym
             lexer->result_symbol = IMPORT_LINE_BREAK;
             return true;
         }
+    }
+
+    if (valid_symbols[SAME_LINE_IF]) {
+        while (lexer->lookahead == ' ' || lexer->lookahead == '\t') {
+            skip(lexer);
+        }
+        if (lexer->lookahead == '\r' || lexer->lookahead == '\n' || lexer->eof(lexer)) {
+            return false;
+        }
+        if (lexer->lookahead == 'i') {
+            advance(lexer);
+            if (lexer->lookahead == 'f') {
+                advance(lexer);
+                if (!iswalnum(lexer->lookahead) && lexer->lookahead != '_') {
+                    lexer->mark_end(lexer);
+                    lexer->result_symbol = SAME_LINE_IF;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     if (valid_symbols[MULTILINE_STRING_CONTENT]) {

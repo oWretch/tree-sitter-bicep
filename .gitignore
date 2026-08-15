@@ -38,3 +38,6 @@ dist/
 *.tar.gz
 *.tgz
 *.zip
+
+# Downloaded tree-sitter CLI binary
+tree-sitter
