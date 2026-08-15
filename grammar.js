@@ -6,9 +6,6 @@
  */
 
 // deno-lint-ignore-file ban-ts-comment
-/* eslint-disable arrow-parens */
-/* eslint-disable camelcase */
-/* eslint-disable-next-line spaced-comment */
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
@@ -550,9 +547,7 @@ module.exports = grammar({
  * Creates a rule to optionally match one or more of the rules separated by a comma
  *
  * @param {Rule} rule
- *
- * @return {ChoiceRule}
- *
+ * @returns {ChoiceRule}
  */
 function commaSep(rule) {
   return optional(commaSep1(rule));
@@ -562,9 +557,7 @@ function commaSep(rule) {
  * Creates a rule to match one or more of the rules separated by a comma
  *
  * @param {Rule} rule
- *
- * @return {SeqRule}
- *
+ * @returns {SeqRule}
  */
 function commaSep1(rule) {
   return seq(rule, repeat(seq(',', rule)));
@@ -574,9 +567,7 @@ function commaSep1(rule) {
  * Creates a rule to match one or more of the rules optionally separated by a comma
  *
  * @param {Rule} rule
- *
- * @return {SeqRule}
- *
+ * @returns {SeqRule}
  */
 function optionalCommaSep1(rule) {
   return seq(rule, repeat(seq(optional(','), rule)), optional(','));
@@ -586,9 +577,7 @@ function optionalCommaSep1(rule) {
  * Creates a rule to optionally match one or more of the rules optionally separated by a comma
  *
  * @param {Rule} rule
- *
- * @return {ChoiceRule}
- *
+ * @returns {ChoiceRule}
  */
 function optionalCommaSep(rule) {
   return optional(optionalCommaSep1(rule));
